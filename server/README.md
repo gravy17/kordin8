@@ -5,7 +5,7 @@
 1. Clone the repo:
 
 ```
-git clone https://github.com/decadevs/week-8-mini-project-group_5
+git clone git@github.com:decadevs/week-8-mini-project-group_5.git
 ```
 
 2. Switch to the dev branch:
@@ -41,6 +41,8 @@ yarn
 ```
 docker compose up
 ```
+
+When the container stack is running, you can explore the database with a GUI at localhost:8080; the credentials will match the .env variables- System: PostgreSQL, server: postgresql, username: same as DB_USERNAME, password: same as DB_PASSWORD, database: same as DATABASE
 
 9. For development- In separate terminals:
 
