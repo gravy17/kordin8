@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "docker compose up & node ./bin/www",
     "compile": "tsc -w",
     "build": "yarn lint && tsc",
-    "dev": "ts-node-dev --respawn ./bin/www",
+    "dev": "docker compose up & ts-node-dev --respawn ./bin/www",
     "lint": "eslint ./src/**/*.ts --fix",
     "test": "jest"
   },

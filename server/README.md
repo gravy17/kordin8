@@ -11,7 +11,7 @@ git clone git@github.com:decadevs/week-8-mini-project-group_5.git
 2. Switch to the dev branch:
 
 ```
-   git switch develop
+git switch develop
 ```
 
 3. Navigate to the part of the app you will work on:
@@ -36,13 +36,7 @@ yarn
 
 7. Create 2 files: `.env` and `.db.env`. Copy the contents of `sample.env` into `.env` and the contents of `sample.db.env` into `.db.env` (You can use passwords and usernames of your choosing in both files but DB_PASSWORD and POSTGRES_PASSWORD should match, as well as DB_USER and POSTGRES_USER; the rest should remain as is)
 
-8. Start up docker and get the database instance running with
-
-```
-docker compose up
-```
-
-When the container stack is running, you can explore the database with a GUI at localhost:8080; the credentials will match the .env variables- System: PostgreSQL, server: postgresql, username: same as DB_USERNAME, password: same as DB_PASSWORD, database: same as DATABASE
+8. Start up docker. If it is not running the next step will fail.
 
 9. For development- In separate terminals:
 
@@ -56,7 +50,10 @@ and
 yarn dev
 ```
 
-this server is configured to run on port 3001 unless otherwise specified with an environment variable
+this server is configured to run on port 3001 unless otherwise specified with an environment variable.
+Make sure you have the folders `controllers`, `middleware`, `models`, and `utils`
+
+- While the app is running, you can explore the database with a GUI at localhost:8080; the credentials will match the .env variables- System: PostgreSQL, server: postgresql, username: same as DB_USERNAME, password: same as DB_PASSWORD, database: same as DATABASE
 
 ## When you complete a feature
 
