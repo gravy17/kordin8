@@ -1,2 +1,2 @@
-jest.config.jest
+jest.config.js
 __tests__/**

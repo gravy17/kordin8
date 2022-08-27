@@ -8,7 +8,7 @@ import db from "./config/db.config";
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
 
-db.authenticate()
+db.sync()
   .then(() => {
     console.info("Database connected succcesfully");
   })

@@ -55,6 +55,15 @@ Make sure you have the folders `controllers`, `middleware`, `models`, and `utils
 
 - While the app is running, you can explore the database with a GUI at localhost:8080; the credentials will match the .env variables- System: PostgreSQL, server: postgresql, username: same as DB_USERNAME, password: same as DB_PASSWORD, database: same as DATABASE
 
+## What To Do Next
+
+- Note: Some code style is automatic, but not all. Let this be your guide: https://google.github.io/styleguide/javascriptguide.xml
+
+- [ ] Create a new controller
+- [ ] Create a new route or add to an existing route
+- [ ] Test your feature (At least 1 test)
+- [ ] Document your feature on the Postman Collection here: https://www.postman.com/altimetry-meteorologist-19263221/workspace/kordin8/collection/23045732-4866f388-2d19-467d-a872-c6e0a8a8201e?action=share&creator=23045732
+
 ## When you complete a feature
 
 1. Build the app: `yarn build`
