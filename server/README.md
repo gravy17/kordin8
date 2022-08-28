@@ -32,7 +32,7 @@ git checkout -b new_feature
 yarn
 ```
 
-6. Install the VSCode Extension `Prettier ESLint`
+6. Install the VSCode Extension `Prettier ESLint`. While working on the project, you need to _disable_ both `ESLint` and `Prettier` extensions if you have them, to avoid interference.
 
 7. Create 2 files: `.env` and `.db.env`. Copy the contents of `sample.env` into `.env` and the contents of `sample.db.env` into `.db.env` (You can use passwords and usernames of your choosing in both files but DB_PASSWORD and POSTGRES_PASSWORD should match, as well as DB_USER and POSTGRES_USER; the rest should remain as is)
 

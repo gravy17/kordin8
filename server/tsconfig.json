@@ -5,7 +5,6 @@
     "rootDir": "./src", /* Specify the root folder within your source files. */
     "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
     "types": [
-      "jest",
       "node"
     ], /* Specify the types that are available in the project. */
     "outDir": "./dist", /* Specify an output folder for all emitted files. */

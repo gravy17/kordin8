@@ -7,5 +7,8 @@
   "editor.formatOnSaveMode": "file",
   "files.autoSave": "onFocusChange",
   "editor.semanticHighlighting.enabled": true,
-  "editor.tabCompletion": "on"
+  "editor.tabCompletion": "on",
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
 }
