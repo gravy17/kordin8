@@ -7,10 +7,11 @@ import logger from "morgan";
 import db from "./config/db.config";
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
+import agentRouter from "./routes/agent";
 
-db.sync()
+db.sync({ force: true })
   .then(() => {
-    console.info("Database connected succcesfully");
+    console.info("Database connected succesfully");
   })
   .catch((err) => {
     console.error(err);
@@ -26,6 +27,7 @@ app.use(express.static(join(__dirname, "..", "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/agents", agentRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));

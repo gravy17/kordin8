@@ -5,17 +5,17 @@ import { OrderInstance } from "./order";
 import { StorageInstance } from "./storage";
 
 export interface AgentAttributes {
-  agentId: string;
+  id: string;
   lastName: string;
   firstName: string;
-  bvn: number;
-  dob: DateDataType;
+  bvn: Number;
+  dob?: string;
   email: string;
-  phoneNumber: number;
-  address: string;
-  govtIdRef: string;
-  service: Service;
-  maxOrders: number;
+  phoneNumber: string;
+  address?: string;
+  govtIdRef?: string;
+  service?: Service;
+  maxOrders?: Number;
 }
 
 export class AgentInstance extends Model<AgentAttributes> {
@@ -25,7 +25,7 @@ export class AgentInstance extends Model<AgentAttributes> {
 AgentInstance.init(
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
@@ -54,7 +54,7 @@ AgentInstance.init(
       }
     },
     bvn: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
@@ -66,8 +66,8 @@ AgentInstance.init(
       }
     },
     dob: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "dob is required"
@@ -90,7 +90,7 @@ AgentInstance.init(
       }
     },
     phoneNumber: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -103,7 +103,7 @@ AgentInstance.init(
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "address is required"
@@ -115,7 +115,7 @@ AgentInstance.init(
     },
     govtIdRef: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "govtIdRef is required"
@@ -127,7 +127,7 @@ AgentInstance.init(
     },
     service: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "service is required"
@@ -138,8 +138,8 @@ AgentInstance.init(
       }
     },
     maxOrders: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      allowNull: true,
       defaultValue: 1
     }
   },
@@ -159,11 +159,11 @@ OrderInstance.belongsTo(AgentInstance, {
 });
 
 AgentInstance.hasOne(StorageInstance, {
-  foreignKey: "agentId",
+  foreignKey: "id",
   as: "files"
 });
 
 StorageInstance.belongsTo(AgentInstance, {
-  foreignKey: "agentId",
+  foreignKey: "id",
   as: "agent"
 });

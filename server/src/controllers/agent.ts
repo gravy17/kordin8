@@ -8,7 +8,7 @@ import {
   registerAgentSchema,
   loginSchema,
   generateToken
-} from "../utils/agentUtils";
+} from "../utils/agent-validation";
 // import { CustomerInstance } from "../models/customer";
 import { OrderInstance } from "../models/order";
 import bcrypt from "bcryptjs";
@@ -18,7 +18,7 @@ export async function RegisterAgent(
   res: Response,
   next: NextFunction
 ) {
-  const agentId = uuidv4();
+  const id = uuidv4();
   // let users = { ...req.body, id };
   try {
     const validateResult = registerAgentSchema.validate(req.body, options);
@@ -46,17 +46,17 @@ export async function RegisterAgent(
     const passwordHash = await bcrypt.hash(req.body.password, 8);
 
     const agent = {
-      agentId: agentId,
+      id: id,
       lastName: req.body.lastName,
       firstName: req.body.firstName,
       bvn: req.body.bvn,
-      dob: req.body.dob,
+      // dob: req.body.dob,
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
-      address: req.body.address,
-      govtIdRef: req.body.govtIdRef,
-      service: req.body.service,
-      maxOrders: req.body.maxOrders,
+      // address: req.body.address,
+      // govtIdRef: req.body.govtIdRef,
+      // service: req.body.service,
+      // maxOrders: req.body.maxOrders,
       password: passwordHash
     };
 
@@ -65,6 +65,8 @@ export async function RegisterAgent(
       .status(200)
       .json({ msg: "You have successfully created your profile", record });
   } catch (err) {
+    console.log(err);
+
     res.status(500).json({
       msg: "Failed to create agent",
       route: "/register"
@@ -89,7 +91,7 @@ export async function AgentKycRecord(
         .json({ Error: validateResult.error.details[0].message });
     }
 
-    const agent = { agentId: id, ...req.body, verifiedAgent: verified.id };
+    const agent = { id: id, ...req.body, verifiedAgent: verified.id };
 
     const record = await AgentInstance.create(agent);
 
@@ -110,9 +112,9 @@ export async function updateAgentRecord(
   res: Response,
   next: NextFunction
 ) {
-  const agentId = uuidv4();
+  const id = uuidv4();
   try {
-    // const { agentId } = req.params;
+    // const { id } = req.params;
     const {
       lastName: lastName,
       firstName: firstName,
@@ -132,7 +134,7 @@ export async function updateAgentRecord(
         .json({ Error: validateResult.error.details[0].message });
     }
 
-    const record = await AgentInstance.findOne({ where: { agentId } });
+    const record = await AgentInstance.findOne({ where: { id } });
     if (!record) {
       return res.status(404).json({
         Error: "Cannot find existing profile"
@@ -168,7 +170,7 @@ export async function LoginAgent(
   res: Response,
   next: NextFunction
 ) {
-  const agentId = uuidv4();
+  const id = uuidv4();
 
   try {
     const validateResult = loginSchema.validate(req.body, options);
@@ -242,9 +244,9 @@ export async function orderInfo(
   next: NextFunction
 ) {
   try {
-    const agentId = req.cookies.id;
+    const id = req.cookies.id;
     const agent = (await AgentInstance.findOne({
-      where: { agentId: agentId },
+      where: { id: id },
       include: [{ model: OrderInstance, as: "Orders" }]
     })) as unknown as { [key: string]: string };
     res.status(200).json({ msg: "Here are your orders", agent });
@@ -318,10 +320,10 @@ export default {
 //     // const doctor = req.params.doctor;
 //     // OR
 //     // console.log(req.params);
-//     const { agentId } = req.params;
+//     const { id } = req.params;
 
 //     const record = await AgentInstance.findOne({
-//       where: { agentId }
+//       where: { id }
 //     });
 //     res
 //       .status(200)
@@ -342,7 +344,7 @@ export default {
 // ) {
 //   try {
 //     const { patientId } = req.params;
-//     const record = await AgentInstance.findOne({ where: { agentId } });
+//     const record = await AgentInstance.findOne({ where: { id } });
 
 //     res
 //       .status(200)

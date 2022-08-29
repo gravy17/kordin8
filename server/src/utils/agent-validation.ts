@@ -5,7 +5,8 @@ export const agentKycSchema = Joi.object().keys({
   lastName: Joi.string().lowercase().required(),
   firstName: Joi.string().lowercase().required(),
   bvn: Joi.string().required(),
-  dob: Joi.date().max("1-1-2004").raw().required(),
+  // dob: Joi.date().max("1-1-2004"),
+  dob: Joi.string().required(),
   // dob: Joi.date().format('YYYY-MM-DD').options({ convert: false }).required(),
   email: Joi.string().trim().required(),
   phoneNumber: Joi.string().required(),
@@ -19,7 +20,8 @@ export const updateAgentSchema = Joi.object().keys({
   lastName: Joi.string().lowercase().required(),
   firstName: Joi.string().lowercase().required(),
   bvn: Joi.string().required(),
-  dob: Joi.date().max("1-1-2004").raw().required(),
+  // dob: Joi.string().required(),
+  // dob: Joi.date().max("1-1-2004").raw().required(),
   // dob: Joi.date().format('YYYY-MM-DD').options({ convert: false }).required(),
   email: Joi.string().trim().required(),
   phoneNumber: Joi.string().required(),
@@ -29,10 +31,11 @@ export const updateAgentSchema = Joi.object().keys({
 
 export const registerAgentSchema = Joi.object()
   .keys({
-    astName: Joi.string().lowercase().required(),
+    lastName: Joi.string().lowercase().required(),
     firstName: Joi.string().lowercase().required(),
     bvn: Joi.string().length(11).required(),
-    dob: Joi.date().max("1-1-2004").raw().required(),
+    // dob: Joi.string().required(),
+    // dob: Joi.date().max("1-1-2004").raw().required(),
     email: Joi.string().trim().lowercase().required(),
     phoneNumber: Joi.string()
       .length(11)
