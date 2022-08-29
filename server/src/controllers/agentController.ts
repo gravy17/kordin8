@@ -121,7 +121,9 @@ export async function updateAgentRecord(
       email: email,
       phoneNumber: phoneNumber,
       address: address,
-      govtIdRef: govtIdRef
+      govtIdRef: govtIdRef,
+      service: service,
+      maxOrders: maxOrders
     } = req.body;
     const validateResult = updateAgentSchema.validate(req.body, options);
     if (validateResult.error) {
@@ -144,7 +146,9 @@ export async function updateAgentRecord(
       email: email,
       phoneNumber: phoneNumber,
       address: address,
-      govtIdRef: govtIdRef
+      govtIdRef: govtIdRef,
+      service: service,
+      maxOrders: maxOrders
     });
 
     res.status(202).json({
