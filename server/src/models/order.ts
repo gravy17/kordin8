@@ -23,7 +23,7 @@ export class OrderInstance extends Model<OrderAttributes> {
 OrderInstance.init(
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
@@ -75,15 +75,12 @@ OrderInstance.init(
   }
 );
 
-OrderInstance.belongsTo(AgentInstance, {
-  foreignKey: "agent"
-});
-
-OrderInstance.belongsTo(CustomerInstance, {
-  foreignKey: "placedBy"
-});
-
 OrderInstance.hasMany(TrackingInstance, {
   foreignKey: "orderId",
   as: "trackers"
+});
+
+TrackingInstance.belongsTo(OrderInstance, {
+  foreignKey: "orderId",
+  as: "order"
 });

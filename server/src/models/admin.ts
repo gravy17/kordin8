@@ -16,7 +16,7 @@ export class AdminInstance extends Model<AdminAttributes> {}
 AdminInstance.init(
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },

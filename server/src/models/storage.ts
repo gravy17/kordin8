@@ -13,7 +13,7 @@ export class StorageInstance extends Model<StorageAttributes> {}
 StorageInstance.init(
   {
     agentId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
@@ -31,9 +31,3 @@ StorageInstance.init(
     tableName: "Storage"
   }
 );
-
-StorageInstance.belongsTo(AgentInstance, {
-  foreignKey: "agentId",
-  onDelete: "CASCADE",
-  as: "agent"
-});

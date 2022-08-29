@@ -26,12 +26,12 @@ export class TrackingInstance extends Model<TrackingAttributes> {}
 TrackingInstance.init(
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
     orderId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -60,8 +60,3 @@ TrackingInstance.init(
     tableName: "Trackers"
   }
 );
-
-TrackingInstance.belongsTo(OrderInstance, {
-  foreignKey: "orderId",
-  as: "order"
-});
