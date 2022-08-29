@@ -5,13 +5,13 @@ import { OrderInstance } from "./order";
 import { StorageInstance } from "./storage";
 
 export interface AgentAttributes {
-  id: string;
+  agentId: string;
   lastName: string;
   firstName: string;
   bvn: number;
   dob: DateDataType;
   email: string;
-  phoneNumber: Number;
+  phoneNumber: number;
   address: string;
   govtIdRef: string;
   service: Service;
@@ -24,7 +24,7 @@ export class AgentInstance extends Model<AgentAttributes> {
 
 AgentInstance.init(
   {
-    id: {
+    agentId: {
       type: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
