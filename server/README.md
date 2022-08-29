@@ -44,6 +44,12 @@ yarn
 yarn compile
 ```
 
+,
+
+```
+yarn servedb
+```
+
 and
 
 ```
