@@ -2,8 +2,6 @@ import { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
 import { Service } from "../utils/types/service";
 import { Status } from "../utils/types/status";
-import { AgentInstance } from "./agent";
-import { CustomerInstance } from "./customer";
 import { TrackingInstance } from "./tracking";
 
 export interface OrderAttributes {

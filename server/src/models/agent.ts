@@ -11,7 +11,7 @@ export interface AgentAttributes {
   bvn: number;
   dob: DateDataType;
   email: string;
-  phoneNumber: Number;
+  phoneNumber: number;
   address: string;
   govtIdRef: string;
   service: Service;

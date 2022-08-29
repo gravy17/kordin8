@@ -18,7 +18,7 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     const token =
       authorization?.slice(7, authorization.length) ||
       (req.cookies.token as string);
-    let verified = verify(token, secret);
+    const verified = verify(token, secret);
     if (!verified) {
       return res
         .status(401)
@@ -28,33 +28,34 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     const { id } = verified as { [key: string]: string };
 
     const usertype = req.cookies.usertype as string;
+    let user;
     switch (usertype) {
       case "admin":
-        const admin = await AdminInstance.findByPk(id);
-        if (!admin) {
+        user = await AdminInstance.findByPk(id);
+        if (!user) {
           return res
             .status(401)
             .json({ message: "Admin not found. Please login" });
         }
-        req.admin = admin.getDataValue("id");
+        req.admin = user.getDataValue("id");
         break;
       case "customer":
-        const customer = await CustomerInstance.findByPk(id);
-        if (!customer) {
+        user = await CustomerInstance.findByPk(id);
+        if (!user) {
           return res
             .status(401)
             .json({ message: "Customer not found. Please login" });
         }
-        req.customer = customer.getDataValue("id");
+        req.customer = user.getDataValue("id");
         break;
       case "agent":
-        const agent = await AgentInstance.findByPk(id);
-        if (!agent) {
+        user = await AgentInstance.findByPk(id);
+        if (!user) {
           return res
             .status(401)
             .json({ message: "Agent not found. Please login" });
         }
-        req.agent = agent.getDataValue("id");
+        req.agent = user.getDataValue("id");
         break;
       default:
         return res

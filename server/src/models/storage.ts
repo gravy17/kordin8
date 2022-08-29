@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
-import { AgentInstance } from "./agent";
 
 export interface StorageAttributes {
   agentId: string;
