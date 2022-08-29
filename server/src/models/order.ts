@@ -2,8 +2,6 @@ import { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
 import { Service } from "../utils/types/service";
 import { Status } from "../utils/types/status";
-import { AgentInstance } from "./agent";
-import { CustomerInstance } from "./customer";
 import { TrackingInstance } from "./tracking";
 
 export interface OrderAttributes {
@@ -23,7 +21,7 @@ export class OrderInstance extends Model<OrderAttributes> {
 OrderInstance.init(
   {
     id: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
@@ -75,15 +73,12 @@ OrderInstance.init(
   }
 );
 
-OrderInstance.belongsTo(AgentInstance, {
-  foreignKey: "agent"
-});
-
-OrderInstance.belongsTo(CustomerInstance, {
-  foreignKey: "placedBy"
-});
-
 OrderInstance.hasMany(TrackingInstance, {
   foreignKey: "orderId",
   as: "trackers"
+});
+
+TrackingInstance.belongsTo(OrderInstance, {
+  foreignKey: "orderId",
+  as: "order"
 });

@@ -44,6 +44,12 @@ yarn
 yarn compile
 ```
 
+,
+
+```
+yarn servedb
+```
+
 and
 
 ```
@@ -62,7 +68,7 @@ Make sure you have the folders `controllers`, `middleware`, `models`, and `utils
 - [ ] Create a new controller
 - [ ] Create a new route or add to an existing route
 - [ ] Test your feature (At least 1 test)
-- [ ] Document your feature on the Postman Collection here: https://www.postman.com/altimetry-meteorologist-19263221/workspace/kordin8/collection/23045732-4866f388-2d19-467d-a872-c6e0a8a8201e?action=share&creator=23045732
+- [ ] Document your feature on the Postman Collection here: https://www.postman.com/altimetry-meteorologist-19263221/workspace/kordin8/collection/23045732-4866f388-2d19-467d-a872-c6e0a8a8201e?action=share&creator=23045732. Fork the collection and document your feature on the your fork. Then submit a pull request for the collection.
 
 ## When you complete a feature
 

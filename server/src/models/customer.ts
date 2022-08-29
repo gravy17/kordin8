@@ -1,6 +1,6 @@
-import dbConfig from "../config/db.config";
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { OrderInstance } from "./order";
+import db from "../config/db.config";
 
 export interface CustomerAttributes {
   id: string;
@@ -18,8 +18,7 @@ export class CustomerInstance extends Model<CustomerAttributes> {
 CustomerInstance.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
     },
@@ -80,7 +79,7 @@ CustomerInstance.init(
     }
   },
   {
-    sequelize: dbConfig,
+    sequelize: db,
     tableName: "Customers"
   }
 );
@@ -88,4 +87,8 @@ CustomerInstance.init(
 CustomerInstance.hasMany(OrderInstance, {
   foreignKey: "placedBy",
   as: "orders"
+});
+
+OrderInstance.belongsTo(CustomerInstance, {
+  foreignKey: "placedBy"
 });

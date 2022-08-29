@@ -24,7 +24,7 @@ export class AgentInstance extends Model<AgentAttributes> {
 
 AgentInstance.init(
   {
-    agentId: {
+    id: {
       type: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
@@ -154,7 +154,16 @@ AgentInstance.hasMany(OrderInstance, {
   as: "orders"
 });
 
+OrderInstance.belongsTo(AgentInstance, {
+  foreignKey: "agent"
+});
+
 AgentInstance.hasOne(StorageInstance, {
   foreignKey: "agentId",
   as: "files"
+});
+
+StorageInstance.belongsTo(AgentInstance, {
+  foreignKey: "agentId",
+  as: "agent"
 });

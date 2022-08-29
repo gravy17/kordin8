@@ -1,8 +1,23 @@
-import { Router, Request, Response, NextFunction } from 'express'
-const router = Router()
+import { Router, Request, Response } from "express";
+import { CustomerInstance } from "../models/customer";
+import { v4 as STRING } from "uuid";
+const router = Router();
 
-router.get('/', function (req: Request, res: Response, next: NextFunction) {
-  res.send('you\'ve hit the users route')
-})
+router.get("/", function (req: Request, res: Response) {
+  res.send("you've hit the users route");
+});
 
-export default router
+router.post("/", async function (req: Request, res: Response) {
+  const id = STRING() as string;
+  const created = await CustomerInstance.create({
+    id,
+    firstName: "John",
+    lastName: "Doe",
+    email: "john@example.com",
+    phoneNumber: "1234567890",
+    password: "ofyourchoice"
+  });
+  res.status(201).json({ message: "successfully created", created });
+});
+
+export default router;
