@@ -58,7 +58,7 @@ OrderInstance.init(
       allowNull: true
     },
     price: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DECIMAL,
       allowNull: false
     },
     status: {

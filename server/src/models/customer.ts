@@ -7,7 +7,7 @@ export interface CustomerAttributes {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   password: string;
 }
 
@@ -59,13 +59,13 @@ CustomerInstance.init(
         }
       }
     },
-    phoneNumber: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
         notNull: {
-          msg: "Phone number is required"
+          msg: "phone is required"
         },
         isNumeric: {
           msg: "Provide the valid phone number"
