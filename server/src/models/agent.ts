@@ -95,7 +95,7 @@ AgentInstance.init(
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "address is required"
@@ -127,7 +127,7 @@ AgentInstance.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notNull: {
           msg: "password is required"

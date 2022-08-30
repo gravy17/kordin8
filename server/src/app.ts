@@ -8,10 +8,11 @@ import db from "./config/db.config";
 import indexRouter from "./routes/index";
 import customerRouter from "./routes/customer";
 import adminRouter from "./routes/admin";
+import agentRouter from "./routes/agent";
 
-db.sync()
+db.sync({ force: true })
   .then(() => {
-    console.info("Database connected succcesfully");
+    console.info("Database connected succesfully");
   })
   .catch((err) => {
     console.error(err);
@@ -29,6 +30,7 @@ app.use("/", indexRouter);
 
 app.use("/customer", customerRouter);
 app.use("/admin", adminRouter);
+app.use("/agents", agentRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
