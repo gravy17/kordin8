@@ -1,21 +1,21 @@
-import { DataTypes, DateDataType, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
 import { Service } from "../utils/types/service";
 import { OrderInstance } from "./order";
-import { StorageInstance } from "./storage";
 
 export interface AgentAttributes {
   id: string;
   lastName: string;
   firstName: string;
-  bvn: Number;
-  dob?: string;
+  bvn?: number;
+  dob: string;
   email: string;
-  phoneNumber: string;
-  address?: string;
+  phone: string;
+  address: string;
   govtIdRef?: string;
-  service?: Service;
-  maxOrders?: Number;
+  service: Service;
+  maxOrders?: number;
+  password: string;
 }
 
 export class AgentInstance extends Model<AgentAttributes> {
@@ -54,20 +54,12 @@ AgentInstance.init(
       }
     },
     bvn: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "bvn is required"
-        },
-        notEmpty: {
-          msg: "Please provide your bvn"
-        }
-      }
+      type: DataTypes.BIGINT,
+      allowNull: true
     },
     dob: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "dob is required"
@@ -89,12 +81,12 @@ AgentInstance.init(
         }
       }
     },
-    phoneNumber: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
-          msg: "phoneNumber is required"
+          msg: "phone is required"
         },
         notEmpty: {
           msg: "Please provide your phone number"
@@ -115,19 +107,11 @@ AgentInstance.init(
     },
     govtIdRef: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notNull: {
-          msg: "govtIdRef is required"
-        },
-        notEmpty: {
-          msg: "Please provide the id number of your government issued id"
-        }
-      }
+      allowNull: true
     },
     service: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "service is required"
@@ -139,8 +123,19 @@ AgentInstance.init(
     },
     maxOrders: {
       type: DataTypes.INTEGER,
-      allowNull: true,
       defaultValue: 1
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notNull: {
+          msg: "password is required"
+        },
+        notEmpty: {
+          msg: "Please provide a password"
+        }
+      }
     }
   },
   {
@@ -157,13 +152,4 @@ AgentInstance.hasMany(OrderInstance, {
 OrderInstance.belongsTo(AgentInstance, {
   foreignKey: "agent"
 });
-
-AgentInstance.hasOne(StorageInstance, {
-  foreignKey: "id",
-  as: "files"
-});
-
-StorageInstance.belongsTo(AgentInstance, {
-  foreignKey: "id",
-  as: "agent"
-});
+<<<<<<< HEAD

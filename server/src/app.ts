@@ -6,7 +6,7 @@ import logger from "morgan";
 
 import db from "./config/db.config";
 import indexRouter from "./routes/index";
-import usersRouter from "./routes/users";
+import customerRouter from "./routes/customer";
 import agentRouter from "./routes/agent";
 
 db.sync({ force: true })
@@ -26,19 +26,15 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "..", "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+
+app.use("/customer", customerRouter);
 app.use("/agents", agentRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
 });
 
-app.use(function (
-  err: createError.HttpError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+app.use(function (err: createError.HttpError, req: Request, res: Response) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
