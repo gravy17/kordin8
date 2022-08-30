@@ -55,15 +55,7 @@ AgentInstance.init(
     },
     bvn: {
       type: DataTypes.BIGINT,
-      allowNull: true,
-      validate: {
-        notNull: {
-          msg: "bvn is required"
-        },
-        notEmpty: {
-          msg: "Please provide your bvn"
-        }
-      }
+      allowNull: true
     },
     dob: {
       type: DataTypes.STRING,
@@ -115,15 +107,7 @@ AgentInstance.init(
     },
     govtIdRef: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notNull: {
-          msg: "govtIdRef is required"
-        },
-        notEmpty: {
-          msg: "Please provide the id number of your government issued id"
-        }
-      }
+      allowNull: true
     },
     service: {
       type: DataTypes.STRING,
