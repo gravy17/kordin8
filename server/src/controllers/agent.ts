@@ -1,358 +1,284 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { AgentInstance } from "../models/agent";
-import {
-  agentKycSchema,
-  options,
-  updateAgentSchema,
-  registerAgentSchema,
-  loginSchema,
-  generateToken
-} from "../utils/agent-validation";
-// import { CustomerInstance } from "../models/customer";
-import { OrderInstance } from "../models/order";
-import bcrypt from "bcryptjs";
+import { loginValidator, validationOpts, generateToken } from "../utils/utils";
+import { agentValidator, agentUpdateValidator } from "../utils/agent";
+import { hash, compare } from "bcryptjs";
+import { RequestInstance } from "../models/requests";
 
-export async function RegisterAgent(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = uuidv4();
-  // let users = { ...req.body, id };
+export async function getAgents(req: Request, res: Response) {
   try {
-    const validateResult = registerAgentSchema.validate(req.body, options);
-    if (validateResult.error) {
+    if (!req.admin) {
+      return res.status(403).json({
+        message: "Not permitted to access this resource"
+      });
+    }
+    const agents = await AgentInstance.findAll();
+    res.status(200).json(agents);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+export async function getAgentInfo(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    if (!req.admin && req.agent !== id) {
+      return res.status(403).json({
+        message: "Not authorized to view this agent"
+      });
+    }
+
+    const record = await AgentInstance.findOne({
+      where: { id },
+      attributes: {
+        exclude: [
+          "email",
+          "phone",
+          "dob",
+          "address",
+          "password",
+          "bvn",
+          "govtIdRef"
+        ]
+      }
+    });
+    if (!record) {
+      return res.status(404).json({
+        message: "Agent not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Agent found",
+      record
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unexpected error: Failed to get agent info",
+      id: req.params.id
+    });
+  }
+}
+
+export async function loginAgent(req: Request, res: Response) {
+  try {
+    const validationResult = loginValidator.validate(req.body, validationOpts);
+    if (validationResult.error) {
+      return res.status(400).json({
+        message: validationResult.error.details[0].message
+      });
+    }
+
+    const { email, password } = req.body;
+    const user = await AgentInstance.findOne({
+      where: { email }
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid Credentials"
+      });
+    }
+
+    const hash = user.getDataValue("password");
+    const valid = await compare(password, hash);
+    if (valid) {
+      const id = user.getDataValue("id");
+      const token = generateToken({ id });
       return res
-        .status(400)
-        .json({ Error: validateResult.error.details[0].message });
+        .status(200)
+        .cookie("token", token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+          sameSite: "strict"
+        })
+        .cookie("usertype", "agent", {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+          sameSite: "strict"
+        })
+        .json({
+          id: user.getDataValue("id"),
+          message: "Agent successfully authenticated"
+        });
+    } else {
+      return res.status(401).json({
+        message: "Invalid Credentials"
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Unexpected error: Failed to authenticate agent"
+    });
+  }
+}
+
+export async function logoutAgent(req: Request, res: Response) {
+  try {
+    delete req.agent;
+    return res
+      .cookie("token", "", { expires: new Date(0) })
+      .cookie("usertype", "", { expires: new Date(0) })
+      .status(200)
+      .json({ message: "Agent successfully logged out" });
+  } catch (err) {
+    res.status(500).json({
+      message: "Unexpected error while logging out agent"
+    });
+  }
+}
+
+export async function updateAgent(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    if (!req.agent || req.agent !== id) {
+      return res.status(403).json({
+        message: "Not authorized to update agent"
+      });
+    }
+
+    const validationResult = agentUpdateValidator.validate(
+      req.body,
+      validationOpts
+    );
+    if (validationResult.error) {
+      return res.status(400).json({
+        message: validationResult.error.details[0].message
+      });
+    }
+
+    const record = await AgentInstance.findOne({
+      where: { id },
+      attributes: ["id", "firstName", "lastName", "email", "phone", "address"]
+    });
+    if (!record) {
+      return res.status(404).json({
+        message: "Agent not found"
+      });
+    }
+
+    const updated = await record.update({
+      ...req.body
+    });
+    res.status(200).json({
+      message: "Agent info successfully updated",
+      updated
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unexpected error: Failed to update agent",
+      id: req.params.id
+    });
+  }
+}
+
+export async function registerAgent(req: Request, res: Response) {
+  const id = uuidv4();
+  try {
+    const validationResult = agentValidator.validate(req.body, validationOpts);
+    if (validationResult.error) {
+      return res.status(400).json({
+        Error: validationResult.error.details[0].message
+      });
     }
 
     const duplicateEmail = await AgentInstance.findOne({
       where: { email: req.body.email }
     });
     if (duplicateEmail) {
-      res.status(409).json({ msg: "Email has been used, Enter another email" });
+      return res.status(400).json({
+        message: "Email already exists"
+      });
     }
 
-    const duplicatePhoneNumber = await AgentInstance.findOne({
-      where: { phoneNumber: req.body.phoneNumber }
+    const hashed = await hash(req.body.password, 8);
+    const record = await AgentInstance.create({
+      ...req.body,
+      id,
+      password: hashed
     });
-
-    if (duplicatePhoneNumber) {
-      res.status(409).json({ msg: "Phone number has been used " });
+    if (record) {
+      return res.status(201).json({
+        id,
+        message: "Agent successfully registered"
+      });
+    } else {
+      throw new Error();
     }
-
-    const passwordHash = await bcrypt.hash(req.body.password, 8);
-
-    const agent = {
-      id: id,
-      lastName: req.body.lastName,
-      firstName: req.body.firstName,
-      bvn: req.body.bvn,
-      // dob: req.body.dob,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      // address: req.body.address,
-      // govtIdRef: req.body.govtIdRef,
-      // service: req.body.service,
-      // maxOrders: req.body.maxOrders,
-      password: passwordHash
-    };
-
-    const record = await AgentInstance.create(agent);
-    res
-      .status(200)
-      .json({ msg: "You have successfully created your profile", record });
   } catch (err) {
-    console.log(err);
-
     res.status(500).json({
-      msg: "Failed to create agent",
-      route: "/register"
+      message: "Failed to register agent"
     });
   }
 }
 
-export async function AgentKycRecord(
-  req: Request | any,
-  res: Response,
-  next: NextFunction
-) {
-  const id = uuidv4();
-
+export async function deleteAgent(req: Request, res: Response) {
   try {
-    const verified = req.user;
-
-    const validateResult = agentKycSchema.validate(req.body, options);
-    if (validateResult.error) {
-      return res
-        .status(400)
-        .json({ Error: validateResult.error.details[0].message });
-    }
-
-    const agent = { id: id, ...req.body, verifiedAgent: verified.id };
-
-    const record = await AgentInstance.create(agent);
-
-    res.status(201).json({
-      msg: "You have successfully add additional information",
-      record
-    });
-  } catch (err) {
-    res.status(500).json({
-      msg: "Failed to create Additional Information",
-      route: "/createKyc"
-    });
-  }
-}
-
-export async function updateAgentRecord(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = uuidv4();
-  try {
-    // const { id } = req.params;
-    const {
-      lastName: lastName,
-      firstName: firstName,
-      bvn: bvn,
-      dob: dob,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
-      govtIdRef: govtIdRef,
-      service: service,
-      maxOrders: maxOrders
-    } = req.body;
-    const validateResult = updateAgentSchema.validate(req.body, options);
-    if (validateResult.error) {
-      return res
-        .status(400)
-        .json({ Error: validateResult.error.details[0].message });
+    const { id } = req.params;
+    if (!req.admin) {
+      return res.status(403).json({
+        message: "Not authorized to delete agent"
+      });
     }
 
     const record = await AgentInstance.findOne({ where: { id } });
     if (!record) {
       return res.status(404).json({
-        Error: "Cannot find existing profile"
+        message: "Agent not found"
       });
     }
-    const updatedRecord = await record.update({
-      lastName: lastName,
-      firstName: firstName,
-      bvn: bvn,
-      dob: dob,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
-      govtIdRef: govtIdRef,
-      service: service,
-      maxOrders: maxOrders
-    });
 
-    res.status(202).json({
-      msg: "You have successfully updated your profile",
-      record: updatedRecord
-    });
-  } catch (err) {
+    const deleted = await AgentInstance.destroy({ where: { id } });
+    if (deleted) {
+      return res.status(200).json({
+        id,
+        message: "Agent successfully deleted"
+      });
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
     res.status(500).json({
-      msg: "Failed to update your profile",
-      route: "/update/:id"
+      message: "Unexpected error: Failed to delete agent"
     });
   }
 }
 
-export async function LoginAgent(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const id = uuidv4();
-
+export async function requestDeletion(req: Request, res: Response) {
   try {
-    const validateResult = loginSchema.validate(req.body, options);
-    if (validateResult.error) {
-      return res
-        .status(400)
-        .json({ Error: validateResult.error.details[0].message });
-    }
-
-    const agent = (await AgentInstance.findOne({
-      where: { email: req.body.email }
-    })) as unknown as { [key: string]: string };
-
-    const { id } = agent;
-
-    const token = generateToken({ id });
-    // console.log("before");
-
-    const validUser = await bcrypt.compare(req.body.password, agent.password);
-    // console.log("after");
-
-    if (!validUser) {
-      res.status(401).json({
-        msg: "Incorrect credentials"
+    const { id } = req.params;
+    if (!req.agent || req.agent !== id) {
+      return res.status(403).json({
+        message: "Not authorized to request deletion"
       });
     }
 
-    if (validUser) {
-      res.cookie("authorization", token, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 1000 * 60 * 60 * 24
+    const record = await AgentInstance.findOne({ where: { id } });
+    if (!record) {
+      return res.status(404).json({
+        message: "Agent not found"
       });
-      res.cookie("id", id, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24
-      });
-
-      res.status(200).json({ msg: "Login Successfully", agent });
     }
-  } catch (err) {
-    // console.log(err);
+
+    const request = await RequestInstance.create({
+      id,
+      user: "agent",
+      requestType: "delete",
+      reason: req.body.reason
+    });
+
+    if (request) {
+      return res.status(200).json({
+        request,
+        message: "Request successfully sent"
+      });
+    } else {
+      throw new Error();
+    }
+  } catch (error) {
     res.status(500).json({
-      mess: err,
-      msg: "Failed to login",
-      route: "/login"
+      message: "Unexpected error: Failed to request agent deletion"
     });
   }
 }
-
-export async function LogoutAgent(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    res.clearCookie("authorization");
-    res.clearCookie("id");
-    res.status(200).json({ msg: "Logout Successfully" });
-  } catch (err) {
-    res.status(500).json({
-      msg: "failed to logout",
-      route: "/logout"
-    });
-  }
-}
-
-export async function orderInfo(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const id = req.cookies.id;
-    const agent = (await AgentInstance.findOne({
-      where: { id: id },
-      include: [{ model: OrderInstance, as: "Orders" }]
-    })) as unknown as { [key: string]: string };
-    res.status(200).json({ msg: "Here are your orders", agent });
-  } catch (err) {
-    res.status(500).json({
-      msg: "failed to fetch order",
-      route: "/order"
-    });
-  }
-}
-
-export default {
-  AgentKycRecord,
-  RegisterAgent,
-  updateAgentRecord,
-  LoginAgent,
-  LogoutAgent,
-  orderInfo
-};
-
-//
-
-// export async function getOrderRecord(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   try {
-//     const limit = req.query?.limit as number | undefined;
-//     const offset = req.query?.offset as number | undefined;
-//     // const record = await TodoInstance.findAll({ where: {}, limit });
-//     const record = await AgentInstance.findAndCountAll({
-//       limit,
-//       offset,
-//       include: [
-//         {
-//           model: AgentInstance,
-//           attributes: [
-//             "id",
-//             "DoctorsName",
-//             "email",
-//             "specialization",
-//             "phoneNumber"
-//           ],
-//           as: "Doctors"
-//         }
-//       ]
-//     });
-
-//     // res.render("index", { record: record.rows });
-
-//     // res.status(200).json({
-//     //   msg: "You have successfully fetch all patient reports",
-//     //   count: record.count,
-//     //   record: record.rows,
-//     // });
-//   } catch (err) {
-//     res.status(500).json({
-//       msg: "Failed to fetch all patient reports",
-//       route: "/read"
-//     });
-//   }
-// }
-
-// export async function getSingleAgentRecord(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   try {
-//     // const doctor = req.params.doctor;
-//     // OR
-//     // console.log(req.params);
-//     const { id } = req.params;
-
-//     const record = await AgentInstance.findOne({
-//       where: { id }
-//     });
-//     res
-//       .status(200)
-//       .json({ msg: "You have successfully find your agent", record });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({
-//       msg: "Failed to read single agent",
-//       route: "/read/:id"
-//     });
-//   }
-// }
-
-// export async function getDeleteSinglePatientRecord(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   try {
-//     const { patientId } = req.params;
-//     const record = await AgentInstance.findOne({ where: { id } });
-
-//     res
-//       .status(200)
-//       .json({ msg: "You have successfully delete your agent", record });
-//   } catch (error) {
-//     res.status(500).json({
-//       msg: "failed to read single patient report",
-//       route: "/read/:id"
-//     });
-//   }
-// }

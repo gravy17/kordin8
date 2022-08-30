@@ -1,20 +1,25 @@
-import express from "express";
+import { Router } from "express";
+import { auth } from "../middleware/auth";
 import {
-  AgentKycRecord,
-  RegisterAgent,
-  updateAgentRecord,
-  LoginAgent,
-  LogoutAgent,
-  orderInfo
+  getAgents,
+  registerAgent,
+  loginAgent,
+  updateAgent,
+  getAgentInfo,
+  logoutAgent,
+  deleteAgent,
+  requestDeletion
 } from "../controllers/agent";
+const router = Router();
 
-const router = express.Router();
+router.get("/get-all", auth, getAgents);
+router.get("/logout", logoutAgent);
+router.post("/login", loginAgent);
+router.post("/register", registerAgent);
 
-router.get("/order", orderInfo);
-router.post("/createKyc", AgentKycRecord);
-router.post("/register", RegisterAgent);
-router.post("/login", LoginAgent);
-router.post("/logout", LogoutAgent);
-router.put("/update/:id", updateAgentRecord);
+router.get("/:id", auth, getAgentInfo);
+router.patch("/:id", auth, updateAgent);
+router.delete("/:id", auth, deleteAgent);
+router.post("/my-info/:id", auth, requestDeletion);
 
 export default router;
