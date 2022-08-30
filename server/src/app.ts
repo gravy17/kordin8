@@ -7,6 +7,7 @@ import logger from "morgan";
 import db from "./config/db.config";
 import indexRouter from "./routes/index";
 import customerRouter from "./routes/customer";
+import adminRouter from "./routes/admin";
 import agentRouter from "./routes/agent";
 
 db.sync({ force: true })
@@ -28,6 +29,7 @@ app.use(express.static(join(__dirname, "..", "public")));
 app.use("/", indexRouter);
 
 app.use("/customer", customerRouter);
+app.use("/admin", adminRouter);
 app.use("/agents", agentRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
