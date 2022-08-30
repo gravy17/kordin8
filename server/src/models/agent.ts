@@ -152,4 +152,3 @@ AgentInstance.hasMany(OrderInstance, {
 OrderInstance.belongsTo(AgentInstance, {
   foreignKey: "agent"
 });
-<<<<<<< HEAD
