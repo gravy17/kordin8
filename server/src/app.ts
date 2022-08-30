@@ -7,6 +7,7 @@ import logger from "morgan";
 import db from "./config/db.config";
 import indexRouter from "./routes/index";
 import customerRouter from "./routes/customer";
+import adminRouter from "./routes/admin";
 
 db.sync()
   .then(() => {
@@ -27,6 +28,7 @@ app.use(express.static(join(__dirname, "..", "public")));
 app.use("/", indexRouter);
 
 app.use("/customer", customerRouter);
+app.use("/admin", adminRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
