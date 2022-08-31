@@ -95,7 +95,7 @@ AgentInstance.init(
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "address is required"
@@ -127,7 +127,7 @@ AgentInstance.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         notNull: {
           msg: "password is required"
@@ -150,5 +150,6 @@ AgentInstance.hasMany(OrderInstance, {
 });
 
 OrderInstance.belongsTo(AgentInstance, {
-  foreignKey: "agent"
+  foreignKey: "agent",
+  as: "assignedAgent"
 });

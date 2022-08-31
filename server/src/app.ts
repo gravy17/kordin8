@@ -9,8 +9,9 @@ import indexRouter from "./routes/index";
 import customerRouter from "./routes/customer";
 import adminRouter from "./routes/admin";
 import agentRouter from "./routes/agent";
+import orderRouter from "./routes/order";
 
-db.sync({ force: true })
+db.sync()
   .then(() => {
     console.info("Database connected succesfully");
   })
@@ -30,7 +31,8 @@ app.use("/", indexRouter);
 
 app.use("/customer", customerRouter);
 app.use("/admin", adminRouter);
-app.use("/agents", agentRouter);
+app.use("/agent", agentRouter);
+app.use("/order", orderRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));

@@ -12,11 +12,10 @@ export interface OrderAttributes {
   description?: string;
   price: number;
   status: Status;
-}
-
-export class OrderInstance extends Model<OrderAttributes> {
   agent?: string;
 }
+
+export class OrderInstance extends Model<OrderAttributes> {}
 
 OrderInstance.init(
   {
@@ -65,6 +64,10 @@ OrderInstance.init(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "Pending"
+    },
+    agent: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   },
   {
