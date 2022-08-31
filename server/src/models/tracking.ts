@@ -1,24 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../config/db.config";
 
-interface BaseTrackingAttributes {
+interface TrackingAttributes {
   id: string;
   orderId: string;
   name?: string;
   phone?: string;
   email?: string;
 }
-
-interface PhoneTrackingAttributes extends BaseTrackingAttributes {
-  phone: string;
-}
-
-interface EmailTrackingAttributes extends BaseTrackingAttributes {
-  email: string;
-}
-
-export type TrackingAttributes = BaseTrackingAttributes &
-  (EmailTrackingAttributes | PhoneTrackingAttributes);
 
 export class TrackingInstance extends Model<TrackingAttributes> {}
 

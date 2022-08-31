@@ -10,6 +10,7 @@ import customerRouter from "./routes/customer";
 import adminRouter from "./routes/admin";
 import agentRouter from "./routes/agent";
 import orderRouter from "./routes/order";
+import trackingRouter from "./routes/tracking";
 
 db.sync()
   .then(() => {
@@ -33,6 +34,7 @@ app.use("/customer", customerRouter);
 app.use("/admin", adminRouter);
 app.use("/agent", agentRouter);
 app.use("/order", orderRouter);
+app.use("/track", trackingRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
