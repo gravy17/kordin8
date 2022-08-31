@@ -32,34 +32,42 @@ git checkout -b new_feature
 yarn
 ```
 
-6. Install the VSCode Extension `Prettier ESLint`. While working on the project, you need to _disable_ both `ESLint` and `Prettier` extensions if you have them, to avoid interference.
+6. Install the VSCode Extension `Prettier ESLint`. While working on the project, you need to _*disable*_ both `ESLint` and `Prettier` extensions if you have them, to avoid interference.
 
-7. Create 2 files: `.env` and `.db.env`. Copy the contents of `sample.env` into `.env` and the contents of `sample.db.env` into `.db.env` (You can use passwords and usernames of your choosing in both files but DB_PASSWORD and POSTGRES_PASSWORD should match, as well as DB_USER and POSTGRES_USER; the rest should remain as is)
+7. Create 2 files: `.env` and `.db.env`. Copy the contents of `.env.sample` into `.env` and the contents of `.db.env.sample` into `.db.env` (You can use passwords and usernames of your choosing in both files but DB_PASSWORD and POSTGRES_PASSWORD should match, as well as DB_USER and POSTGRES_USER; the rest should remain as is)
 
 8. Start up docker. If it is not running the next step will fail.
 
 9. For development- In separate terminals:
 
-```
-yarn compile
-```
+- ```
+  yarn compile
+  ```
 
-,
+- ```
+  yarn servedb
+  ```
 
-```
-yarn servedb
-```
-
-and
-
-```
-yarn dev
-```
+- ```
+  yarn dev
+  ```
 
 this server is configured to run on port 3001 unless otherwise specified with an environment variable.
 Make sure you have the folders `controllers`, `middleware`, `models`, and `utils`
 
 - While the app is running, you can explore the database with a GUI at localhost:8080; the credentials will match the .env variables- System: PostgreSQL, server: postgresql, username: same as DB_USERNAME, password: same as DB_PASSWORD, database: same as DATABASE
+
+## Seeding the DB with a Superadmin
+
+A superadmin is required for an admin to be able to create other admins. Follow these steps to seed the database with a superadmin:
+
+- ```
+  npx sequelize-cli db:migrate
+  ```
+
+- ```
+  npx sequelize-cli db:seed:all
+  ```
 
 ## What To Do Next
 
@@ -91,7 +99,7 @@ yarn start
 3. Sync with the remote:
 
 ```
-git commit -am "Commit message here" && git pull
+git commit -am "Commit message here" && git pull origin develop
 ```
 
 - Resolve any merge conflicts. Ensure that the app still builds and runs correctly.
@@ -100,4 +108,4 @@ git commit -am "Commit message here" && git pull
 
 ## Standards
 
-Standards will be maintained automatically by the settings in .vscode/settings.json and governed by settings in the .eslintrc.json. A build with eslint is necessary to qualify changes for a pull request.
+Standards will be maintained automatically by the settings in .vscode/settings.json and governed by settings in the .eslintrc.json. A successful build with eslint is necessary to qualify changes for a pull request.
