@@ -16,8 +16,8 @@ module.exports = {
         lastName: "Kordin8",
         email: email,
         phone: "01234567890",
-        address: "7 Asajon Way Sangotedo",
         password: hash,
+        address: "7 Asajon Way Sangotedo",
         createdAt: date,
         updatedAt: date
       }
