@@ -6,7 +6,7 @@
     "servedb": "docker compose up",
     "start": "node ./bin/www",
     "compile": "tsc -w",
-    "build": "yarn test && yarn lint && tsc",
+    "build": "tsc",
     "dev": "ts-node-dev --respawn ./bin/www",
     "lint": "eslint ./src/**/*.ts --fix",
     "test": "jest"
