@@ -14,7 +14,7 @@ import trackingRouter from "./routes/tracking";
 
 db.sync()
   .then(() => {
-    console.info("Database connected succesfully");
+    console.info("Database connected successfully");
   })
   .catch((err) => {
     console.error(err);
@@ -22,21 +22,18 @@ db.sync()
 
 const app = express();
 
-app.use(function (req: Request, res: Response, next: NextFunction) {
-  res.header("Access-Control-Allow-Origin", process.env.CLIENT_APP_URL);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-
-  next();
-});
-
 app.use(logger("dev"));
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "..", "public")));
+
+app.use((req, res, next) => {
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,PATCH,DELETE");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 
 app.use("/", indexRouter);
 

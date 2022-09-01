@@ -35,6 +35,7 @@ export async function getAdminInfo(req: Request, res: Response) {
 
 export async function loginAdmin(req: Request, res: Response) {
   try {
+    console.log(req.body);
     const validationResult = loginValidator.validate(req.body, validationOpts);
     if (validationResult.error) {
       return res.status(400).json({
