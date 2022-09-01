@@ -72,6 +72,7 @@ export async function loginAdmin(req: Request, res: Response) {
         })
         .json({
           id: user.getDataValue("id"),
+          type: "admin",
           message: "Admin successfully authenticated"
         });
     } else {

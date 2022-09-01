@@ -5,3 +5,5 @@ dist
 *.log
 todo
 .DS_STORE
+heroku.yml
+Dockerfile-heroku

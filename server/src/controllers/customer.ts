@@ -78,6 +78,7 @@ export async function loginCustomer(req: Request, res: Response) {
         })
         .json({
           id: user.getDataValue("id"),
+          type: "customer",
           message: "Customer successfully authenticated"
         });
     } else {
