@@ -6,7 +6,7 @@ services:
     env_file:
       - ./.db.env
     ports:
-      - 5433:5432
+      - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
     networks:
@@ -18,7 +18,7 @@ services:
       - postgresql
     environment:
       - ADMINER_DEFAULT_SERVER=postgresql
-      - ADMINER_DESIGN=galkaev
+      - ADMINER_DESIGN=hydra
     ports:
       - "8080:8080"
     networks:

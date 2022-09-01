@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { validServices } from "./types/service";
 
 const millisecondsin18Yrs = 18 * 365 * 24 * 60 * 60 * 1000;
 const nowMinus18Yrs = new Date().getTime() - millisecondsin18Yrs;
@@ -13,7 +14,9 @@ export const agentValidator = Joi.object()
     address: Joi.string().trim().required(),
     govtIdRef: Joi.string().trim(),
     maxOrders: Joi.number().max(99),
-    service: Joi.string().required(),
+    service: Joi.string()
+      .valid(...validServices)
+      .required(),
     password: Joi.string().min(8).max(30).required(),
     confirm_password: Joi.ref("password")
   })
@@ -30,7 +33,7 @@ export const agentUpdateValidator = Joi.object()
     address: Joi.string().trim(),
     govtIdRef: Joi.string().trim(),
     maxOrders: Joi.number().max(99),
-    service: Joi.string(),
+    service: Joi.string().valid(...validServices),
     password: Joi.string().min(8).max(30),
     confirm_password: Joi.ref("password")
   })

@@ -3,9 +3,10 @@ import db from "../config/db.config";
 
 export interface RequestAttributes {
   id: string;
-  user: "admin" | "agent" | "customer";
-  requestType: "delete";
+  user?: "admin" | "agent" | "customer";
+  requestType: "delete" | "cancel";
   reason?: string;
+  order?: boolean;
 }
 
 export class RequestInstance extends Model<RequestAttributes> {}
@@ -19,15 +20,7 @@ RequestInstance.init(
     },
     user: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: "user is required"
-        },
-        notEmpty: {
-          msg: "Please select a type of user (admin, agent, customer)"
-        }
-      }
+      allowNull: true
     },
     requestType: {
       type: DataTypes.STRING,
@@ -44,6 +37,10 @@ RequestInstance.init(
     reason: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    order: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   },
   {

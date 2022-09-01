@@ -9,8 +9,10 @@ import indexRouter from "./routes/index";
 import customerRouter from "./routes/customer";
 import adminRouter from "./routes/admin";
 import agentRouter from "./routes/agent";
+import orderRouter from "./routes/order";
+import trackingRouter from "./routes/tracking";
 
-db.sync({ force: true })
+db.sync()
   .then(() => {
     console.info("Database connected succesfully");
   })
@@ -19,6 +21,16 @@ db.sync({ force: true })
   });
 
 const app = express();
+
+app.use(function (req: Request, res: Response, next: NextFunction) {
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_APP_URL);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -30,7 +42,9 @@ app.use("/", indexRouter);
 
 app.use("/customer", customerRouter);
 app.use("/admin", adminRouter);
-app.use("/agents", agentRouter);
+app.use("/agent", agentRouter);
+app.use("/order", orderRouter);
+app.use("/track", trackingRouter);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));

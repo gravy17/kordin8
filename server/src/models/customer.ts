@@ -90,5 +90,6 @@ CustomerInstance.hasMany(OrderInstance, {
 });
 
 OrderInstance.belongsTo(CustomerInstance, {
-  foreignKey: "placedBy"
+  foreignKey: "placedBy",
+  as: "customer"
 });
