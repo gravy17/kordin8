@@ -1,0 +1,19 @@
+.home {
+  display: flex;
+  border: 1px solid #ccc;
+}
+.home .homeContainer {
+  flex: 6;
+}/*# sourceMappingURL=home.css.map */
+
+/* Default height for small devices */
+#intro-example {
+  height: 400px;
+}
+
+/* Height for devices larger than 992px */
+@media (min-width: 992px) {
+  #intro-example {
+    height: 600px;
+  }
+}

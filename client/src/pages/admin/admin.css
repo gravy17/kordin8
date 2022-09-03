@@ -1,0 +1,7 @@
+.admin {
+  display: flex;
+  border: 1px solid #ccc;
+}
+.admin .adminContainer {
+  flex: 6;
+}/*# sourceMappingURL=admin.css.map */
