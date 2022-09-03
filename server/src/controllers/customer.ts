@@ -5,6 +5,8 @@ import { loginValidator, validationOpts, generateToken } from "../utils/utils";
 import { customerValidator, customerUpdateValidator } from "../utils/customer";
 import { hash, compare } from "bcryptjs";
 import { RequestInstance } from "../models/requests";
+import { OrderInstance } from "../models/order";
+import { AgentInstance } from "../models/agent";
 
 export async function getCustomerInfo(req: Request, res: Response) {
   try {
@@ -19,7 +21,20 @@ export async function getCustomerInfo(req: Request, res: Response) {
       where: { id },
       attributes: {
         exclude: ["email", "phone", "password"]
-      }
+      },
+      include: [
+        {
+          model: OrderInstance,
+          as: "orders",
+          include: [
+            {
+              model: AgentInstance,
+              as: "assignedAgent",
+              attributes: ["firstName", "phone"]
+            }
+          ]
+        }
+      ]
     });
     if (!record) {
       return res.status(404).json({
