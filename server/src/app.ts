@@ -11,6 +11,7 @@ import adminRouter from "./routes/admin";
 import agentRouter from "./routes/agent";
 import orderRouter from "./routes/order";
 import trackingRouter from "./routes/tracking";
+import cors from "cors";
 
 db.sync()
   .then(() => {
@@ -21,6 +22,13 @@ db.sync()
   });
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_APP_URL,
+    optionsSuccessStatus: 200
+  })
+);
 
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));

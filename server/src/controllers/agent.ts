@@ -5,6 +5,7 @@ import { loginValidator, validationOpts, generateToken } from "../utils/utils";
 import { agentValidator, agentUpdateValidator } from "../utils/agent";
 import { hash, compare } from "bcryptjs";
 import { RequestInstance } from "../models/requests";
+import { OrderInstance } from "../models/order";
 
 export async function getAgents(req: Request, res: Response) {
   try {
@@ -41,7 +42,13 @@ export async function getAgentInfo(req: Request, res: Response) {
           "bvn",
           "govtIdRef"
         ]
-      }
+      },
+      include: [
+        {
+          model: OrderInstance,
+          as: "orders"
+        }
+      ]
     });
     if (!record) {
       return res.status(404).json({
