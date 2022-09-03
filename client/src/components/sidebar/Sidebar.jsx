@@ -1,89 +1,87 @@
-import './sidebar.scss';
-import React from 'react';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
-import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
-import RequestQuoteRoundedIcon from '@mui/icons-material/RequestQuoteRounded';
-import MoneyOffOutlinedIcon from '@mui/icons-material/MoneyOffOutlined';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import LogoutIcon from '@mui/icons-material/Logout';
-
-
+import "./sidebar.scss";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import StoreIcon from "@mui/icons-material/Store";
+import InsertChartIcon from "@mui/icons-material/InsertChart";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
+import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
-    
-    
-    return (
-        <div className="sidebar">
-        
-            <div className="top">
-                <span className="logo">Kordin8</span>
-            </div>
-            <hr />
-            
-            <div className="center">
-                <ul>
-                    <p className="title">MAIN</p>
-                    <li>
-                    <DashboardIcon  className="icon"/>
-                        <span>Dashboard</span>
-                    </li>
-                    <li>
-                        <PermIdentityRoundedIcon className='icon'/>
-                        <span>Agents</span>
-                    </li>
-                    <li>
-                        <GroupAddOutlinedIcon className='icon'/>
-                        <span>Customers</span>
-                    </li>
-                    <li>
-                        <AdminPanelSettingsIcon className='icon'/>
-                        <span>Admins</span>
-                    </li>
-                    <p className="title">ORDERS AREA</p>
-                    <li>
-                        <RequestQuoteRoundedIcon className='icon' />
-                        <span>Transactions</span>
-                    </li>
-                    <li>
-                        <MoneyOffOutlinedIcon className='icon'/>
-                        <span>Orders</span>
-                    </li>
-                    <li>
-                        <LocalShippingIcon className='icon'/>
-                        <span>Delivery</span>
-                    </li>
-                    <li>
-                        <ControlPointIcon  className='icon'/>
-                        <span>Status</span>
-                    </li>
-                    <p className="title">USEFUL LINKS</p>
-                    <li>
-                        <AccountCircleIcon  className='icon'/>
-                        <span>Profile</span>
-                    </li>
-                    
-                    <li>
-                        <LogoutIcon  className='icon'/>
-                        <span>LogOut</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div className="bottom">
-            <div className="ColorOption">color1</div>
-            <div className="ColorOption">color2</div>
-            <div className="ColorOption">color3</div>
-            </div>
-           
-        
-        
-        </div>
-               
-    )   
-}
+  return (
+    <div className="sidebar">
+      <div className="top">
+      </div>
+      <hr />
+      <div className="center">
+        <ul>
+          <p className="title">MAIN</p>
+          <li>
+            <DashboardIcon className="icon" />
+            <span>Dashboard</span>
+          </li>
+          <p className="title">LISTS</p>
+          <Link to="/users" style={{ textDecoration: "none" }}>
+            <li>
+              <PersonOutlineIcon className="icon" />
+              <span>Users</span>
+            </li>
+          </Link>
+          <Link to="/products" style={{ textDecoration: "none" }}>
+            <li>
+              <StoreIcon className="icon" />
+              <span>Products</span>
+            </li>
+          </Link>
+          <li>
+            <CreditCardIcon className="icon" />
+            <span>Orders</span>
+          </li>
+          <li>
+            <LocalShippingIcon className="icon" />
+            <span>Delivery</span>
+          </li>
+          <p className="title">USEFUL</p>
+          <li>
+            <InsertChartIcon className="icon" />
+            <span>Stats</span>
+          </li>
+          <li>
+            <NotificationsNoneIcon className="icon" />
+            <span>Notifications</span>
+          </li>
+          <p className="title">SERVICE</p>
+          <li>
+            <SettingsSystemDaydreamOutlinedIcon className="icon" />
+            <span>System Health</span>
+          </li>
+          <li>
+            <PsychologyOutlinedIcon className="icon" />
+            <span>Logs</span>
+          </li>
+          <li>
+            <SettingsApplicationsIcon className="icon" />
+            <span>Settings</span>
+          </li>
+          <p className="title">USER</p>
+          <li>
+            <AccountCircleOutlinedIcon className="icon" />
+            <span>Profile</span>
+          </li>
+          <li>
+            <ExitToAppIcon className="icon" />
+            <span>Logout</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 export default Sidebar;

@@ -1,256 +1,90 @@
-.sidebar{
-    background-color: #000018;
-    flex: 1;
-    border-right: 1px solid #ccc;
-    min-height: 100vh;
-    
-    
-    .top{
-      
-        height: 50px;
+.sidebar {
+  flex: 1;
+  border-right: 0.5px solid rgb(230, 227, 227);
+  min-height: 100vh;
+  background-color: white;
+
+  .top {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #6439ff;
+    }
+  }
+
+  hr {
+    height: 0;
+    border: 0.5px solid rgb(230, 227, 227);
+  }
+
+  .center {
+    padding-left: 10px;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .title {
+        font-size: 10px;
+        font-weight: bold;
+        color: #999;
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
+
+      li {
         display: flex;
         align-items: center;
-        justify-content: center;
-        
-        
-        .logo{
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-        }
-        
-    }
-    
-    hr{
-        height: 0;
-        border: 1px solid #ccc;
-    }
-    
-    .center{
-        padding-left: 10%;
-    }
-    
-    .center ul{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .title{
-        font-size: 1rem;
-        margin-top: 25px;
-        margin-bottom: 10px;
-        color: rgb(169, 158, 158);
-    }
-    li{
-        display: flex;
-        align-items: center;
-        margin: 15px 0;
         padding: 5px;
         cursor: pointer;
-        
-        &:hover{
-            color: #000;
-           background-color: #000;
-            
+
+        &:hover {
+          background-color: #ece8ff;
         }
-    }
-    
-    .icon{
-        margin-right: 10px;
-        color: whitesmoke;
-    
-    }
-    
-    span{
-        font-size: 15px;
-        font-weight: 400;
-        color: white;
-        
-    }
-    
-    .bottom{
-        display: flex;
-        align-items: center;
-        margin: 10px;
-        
-        .ColorOption{
-            width: 20px;
-            height: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            margin: 5px;
-            
-            &:nth-child(1){
-                background-color: #f333;
-            }
-            &:nth-child(2){
-                background-color: whitesmoke;
-            }
-            &:nth-child(3){
-                background-color: darkorchid;
-            }
+
+        .icon {
+          font-size: 18px;
+          color: #7451f8;
         }
-        
-        
+
+        span{
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            margin-left: 10px;
+        }
+      }
     }
-    
-    
-      
-    
-    
-    
-   
+  }
+
+  .bottom{
+      display: flex;
+      align-items: center;
+      margin: 10px;
+
+      .colorOption{
+          width: 20px;
+          height: 20px;
+          border-radius: 5px;
+          border: 1px solid #7451f8;
+          cursor: pointer;
+          margin: 5px;
+
+          &:nth-child(1){
+              background-color: whitesmoke;
+          }
+          &:nth-child(2){
+              background-color: #333;
+          }
+          &:nth-child(3){
+              background-color: darkblue;
+          }
+      }
+  }
 }
-
-//Media Query for Mobile
-@media only screen and (max-width: 580px) {
-    .sidebar{
-        flex: 2;
-        border-right: 1px solid #ccc;
-        min-height: 50vh;
-        
-        
-        .top{
-          
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
-            
-            .logo{
-                font-size: 1rem;
-                font-weight: bold;
-                color: blueviolet;
-            }
-            
-        }
-        
-        hr{
-            height: 0;
-            border: 1px solid #ccc;
-        }
-        
-        .center{
-            padding-left: 10%;
-        }
-        
-        .center ul{
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .title{
-            font-size: 1rem;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: gray;
-        }
-        li{
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-            padding: 5px;
-            cursor: pointer;
-            
-            &:hover{
-                background-color: green;
-            }
-        }
-        
-        .icon{
-            margin-right: 10px;
-            color: black;
-        }
-        
-        span{
-            font-size: 10px;
-            font-weight: 300;
-            color: #333;
-           
-        }
-        
-        
-        
-       
-    }
-  }
-
-//Media Query for Tablet
-//Media Query for Mobile
-@media (min-width: 768px) and (max-width: 1024px) {
-    .sidebar{
-        flex: 2;
-        border-right: 1px solid #ccc;
-        min-height: 50vh;
-        
-        
-        .top{
-          
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
-            
-            .logo{
-                font-size: 1rem;
-                font-weight: bold;
-                color: blueviolet;
-            }
-            
-        }
-        
-        hr{
-            height: 0;
-            border: 1px solid #ccc;
-        }
-        
-        .center{
-            padding-left: 10%;
-        }
-        
-        .center ul{
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .title{
-            font-size: 1rem;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: gray;
-        }
-        li{
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-            padding: 5px;
-            cursor: pointer;
-            
-            &:hover{
-                background-color: green;
-            }
-        }
-        
-        .icon{
-            margin-right: 10px;
-            color: black;
-        }
-        
-        span{
-            font-size: 10px;
-            font-weight: 300;
-            color: #333;
-           
-        }
-        
-        
-        
-       
-    }
-  }

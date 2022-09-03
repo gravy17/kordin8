@@ -1,169 +1,96 @@
- 
+import "./signup.scss";
+import Navbar from "../../components/navbar/Navbar";
+import { useState } from "react";
+import {SERVER_URL} from "../../config";
 
+const Signup = ({ customerInputs, agentInputs}) => {
+  const [role, setRole] = useState("customer");
+  const [formData, setFormData] = useState({})
 
-import React from "react";
-import { useState, useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import FormInput from "../../components/formInput/FormInput";
-import Label from "../../components/label/Label";
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setRole(value);
+  };
 
-const SERVER_URL = "http://localhost:3001";
-
-function Register() {
-  // const initialValues = { email: "", password: ""};
-
-  // const [formValues, setFormValues] = useState(initialValues);
-  // console.log(initialValues);
-
-  const [formErrors, setFormErrors] = useState({});
-
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  const [user, setUser] = useState('admin')
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("");
-
-  // const handleChange = (e) => {
-  //   // console.log(e.target);
-  //   // const { name, value } = e.target;
-  //   // setFormValues({ ...formValues, [name]: value });
-  // // console.log ( setFormValues({ ...formValues, [name]: value }));
-  //   // setIsSubmit(true);
-  //   // setUser(e.target.value)
-  // };
-
-  const handleSubmit = (event) => {
-    setFormErrors(validateForm(email, password));
-    // const data = {formValues}
-    // console.log(data1);
-    fetch(`${SERVER_URL}/${user}/login`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        // formValues
-        email:email,
-        password:password
-        // email: "superadmin@kordin8.com",
-        //   password: "superpassword",
-      }),
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData, 
+      [name]:value
     })
-    .then((response) => response.json())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-    event.preventDefault();
-    event.stopPropagation();
-  };
-  
-  
-  
-
-  // email: "superadmin@kordin8.com",
-  //       password: "superpassword",
-
-  // useEffect(() => {
-  //   // console.log(formErrors);
-  //   if (Object.keys(formErrors).length === 0 && isSubmit) {
-  //     console.log(email,password);
-  //   }
-  // }, [email, password]);
-
-  const validateForm = (email,password) => {
-    
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!email) {
-      errors.email = "Email is required!";
-    } else if (!regex.test(email)) {
-      errors.email = "This is not a valid email format!";
-    }
-    if (!password) {
-      errors.password = "Password is required";
-    } else if (password.length < 6) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (password.length > 15) {
-      errors.password = "Password cannot exceed more than 15 characters";
-    }
-    return errors;
   };
 
-  const successMsg = () => {
-if (Object.keys(formErrors).length === 0 && isSubmit) {
-  
-return toast(` <div className="ui message success">Signed in successfully</div>`
-  )
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const payload = JSON.stringify(formData);
+    const opts = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": SERVER_URL,
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+      },
+      body: payload,
+    };
+    fetch(`${SERVER_URL}/${role}/register`, opts)
+    .then((res) => res.ok && window.location.assign("/login"))
+    .catch((err) => console.log(err))
   }
 
-  
-
   return (
-    <div className="container">
-      {/* {SuccessMsg()} */}
-        <form onSubmit={handleSubmit}>
-          <h1>Registration Form</h1>
-          <div className="ui divider"></div>
-          <div className="ui form">
-         
-            <div>
-              <Label HtmlFor={"lastname"}>Last Name</Label>
-              <FormInput type={"text"} placeholder={"Last Name"} name={"lastname"}/>
+    <div className="signup">
+      <div className="signupContainer">
+        <Navbar />
+        <div className="top">
+          <h1>Signup</h1>
+        </div>
+        <div className="bottom">
+          <form className="form">
+            <div className="formInput">
+              <label>Sign up as: </label>
+              <select name="role" onInput={handleChange} defaultValue="customer">
+                <option value="customer">Customer</option>
+                <option value="agent">Agent</option>
+              </select>
             </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <div>
-              <FormInput/>
-            </div>
-            <br />
-            <button type="submit" >Register</button>
-            
-          </div>
-        </form>
+            {role === "customer" ? (
+              <>
+                {customerInputs.map((input) => (
+                  <div className="formInput" key={input.id}>
+                    <label>{input.label}</label>
+                    <input name={input.name} type={input.type} placeholder={input.placeholder} onChange={handleInput}/>
+                  </div>
+                ))}
+              </>
+            ): (
+              <>
+                {agentInputs.map((input) => 
+                  input.type === "select" ? (
+                    <div className="formInput" key={input.name}>
+                      <label>{input.label}</label>
+                      <select name={input.name} required onChange={handleInput}>
+                        {input.options.map((option) => (
+                          <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  ):(
+                  <div className="formInput" key={input.id}>
+                    <label>{input.label}</label>
+                    <input name={input.name} type={input.type} placeholder={input.placeholder} onChange={handleInput}/>
+                  </div>
+                  )
+                )}
+              </>
+            )}
+            <button onClick={handleSubmit}>Signup</button>
+          </form>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default Register;
-
-    // lastName
-    // firstName
-    // bvn
-    // dob
-    // email
-    // phone
-    // address
-    // govtIdRef
-    // maxOrders
-    // service
-    // password
-    // confirm_password
+export default Signup

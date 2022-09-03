@@ -1,31 +1,50 @@
-import React from 'react'
-import HomePage from './pages/home/Home'
-import Login from './pages/loginpage/Login'
-import Signup from './pages/signup/Signup'
-import RegisterAdmin from './pages/admin/Register'
-import RegisterAgent from './pages/agentDashboard/Register'
-import RegisterCustomer from './pages/custormerDashboard/Register'
-import Admin from './pages/admin/Admin'
-
-import {BrowserRouter as Router,Switch,Route,Link, BrowserRouter, Routes} from "react-router-dom";
-
+import Home from "./pages/home/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
+import Track from "./pages/track/Track";
+import List from "./pages/list/List";
+import Single from "./pages/single/Single";
+import New from "./pages/new/New";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { productInputs, userInputs, customerInputs, agentInputs } from "./formSource";
+import "./style/dark.scss";
+import { useContext } from "react";
+import { DarkModeContext } from "./context/darkModeContext";
 
 function App() {
+  const { darkMode } = useContext(DarkModeContext);
+
   return (
-    <div className='App'>
+    <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-        <Route path="/" index element={<HomePage/>} />
-          <Route path="admin" index element={<Admin />} />
-            <Route path="login" element={<Login/>} />
-            {/* <Route path="register" element={<Signup />} /> */}
-            <Route path="register" element={<RegisterAdmin />} />
-            <Route path="register" element={<RegisterCustomer />} />
-            <Route path="register" element={<RegisterAgent />} />
-           
+          <Route path="/">
+            <Route index element={<Home />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup customerInputs={customerInputs} agentInputs={agentInputs} />} />
+            <Route path="track" element={<Track />} />
+            
+            <Route path="users">
+              <Route index element={<List />} />
+              <Route path=":userId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={userInputs} title="Add New User" />}
+              />
+            </Route>
+            <Route path="products">
+              <Route index element={<List />} />
+              <Route path=":productId" element={<Single />} />
+              <Route
+                path="new"
+                element={<New inputs={productInputs} title="Add New Product" />}
+              />
+            </Route>
+          </Route>
         </Routes>
       </BrowserRouter>
-  
     </div>
   );
 }
