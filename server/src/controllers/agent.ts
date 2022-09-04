@@ -107,6 +107,7 @@ export async function loginAgent(req: Request, res: Response) {
         })
         .json({
           id: user.getDataValue("id"),
+          name: user.getDataValue("firstName"),
           type: "agent",
           message: "Agent successfully authenticated"
         });
