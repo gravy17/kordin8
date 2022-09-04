@@ -196,6 +196,8 @@ export async function registerCustomer(req: Request, res: Response) {
       id,
       password: hashed
     });
+    console.log("After");
+    console.log(req.body);
     if (record) {
       return res.status(201).json({
         id,
@@ -205,6 +207,7 @@ export async function registerCustomer(req: Request, res: Response) {
       throw new Error();
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Failed to register customer"
     });
