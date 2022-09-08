@@ -1,10 +1,11 @@
 import { createContext, useReducer } from "react";
 import UserReducer from "./userReducer";
+import { getCookie } from "../cookieControl";
 
 const INITIAL_STATE = {
-  type: null,
-  name: null,
-  id: null
+  type: getCookie('user-type') || null,
+  name: getCookie('user-name') || null,
+  id: getCookie('user-id') || null,
 };
 
 export const UserContext = createContext(INITIAL_STATE);

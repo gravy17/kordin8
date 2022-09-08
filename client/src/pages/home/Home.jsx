@@ -7,53 +7,57 @@ const Home = () => {
       <div className="homeContainer">
         <Navbar />
         <div className="homeContent">
-        <div className="images">
-            <div className="homeText">
-              <h1>Find your Luggages </h1>
-              <p>Ship, manage, track, deliver.</p>
+          <div className="images">
+            <div className="hero">
+              <div className="homeText">
+                <h1>Find Professionals. Get things done.</h1>
+                <p>Place orders with our verified agents and track their progress</p>
+                <div className="homeSearch">
+                  <input type="text" placeholder="TRACKING ID" />
+                  <button>Track</button>
+                </div>
+              </div>
             </div>
-            <div className="box"></div>
-            <div className="box"></div>
-            <div className="box"></div>
-            <div className="homeSearch">
-            <input type="text" placeholder="TRACKING ID" /><button>Track</button>
-          </div>
           </div>
             <div className="page-below">
-              <div className="page-below-image"></div>
               <div className="page-below-section">
-                <h2>Manage your shipment and returns</h2>
+                <h2>As a customer: <br />Manage all your logistics comfortably in one place</h2>
                 <div className="page-below-section-text">
                   <div className="box">
-                  <img className="one" src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-notifications-automation-technology-flaticons-flat-flat-icons.png" alt="box" />
-                    <h3>Notifications</h3>
+                  <img className="one" src="/icons/credit-card.svg" alt="box" />
+                    <h3>Order</h3>
                   </div>
                   <div className="box">
-                  <img className="two" src="https://img.icons8.com/external-soft-fill-juicy-fish/60/000000/external-hour-contact-us-soft-fill-soft-fill-juicy-fish.png" alt="box" />
-                    <h3>24/7 Support</h3>
+                  <img className="two" src="/icons/search-alt.svg" alt="box" />
+                    <h3>Track</h3>
                   </div>
                   <div className="box">
-                  <img className="three" src="https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/000000/external-lorry-transportation-icongeek26-glyph-icongeek26-1.png" alt="box" />
-                    <h3>Delivery</h3>
-                  </div>
-                  
-                  <div className="box">
-                  <img className="four" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/000000/external-notifications-automation-technology-flaticons-lineal-color-flat-icons.png" alt="box" />
-                    <h3>Get Alerted</h3>
-                  </div>             
-     
+                  <img className="three" src="/icons/question-circle.svg" alt="box" />
+                    <h3>Support</h3>
+                  </div>           
                 </div>
                 
               </div>
             </div>
-           
-            <footer class="footer">
-                
-               
-              </footer>
-            
-            
-            
+            <div className="page-below">
+              <div className="page-below-section">
+                <h2>As an agent: <br />Get connected with the customers who need your services most</h2>
+                <div className="page-below-section-text">
+                  <div className="box">
+                  <img className="one" src="/icons/edit.svg" alt="box" />
+                    <h3>Register</h3>
+                  </div>
+                  <div className="box">
+                  <img className="two" src="/icons/check-circle.svg" alt="box" />
+                    <h3>Accept</h3>
+                  </div>
+                  <div className="box">
+                  <img className="three" src="/icons/coins.svg" alt="box" />
+                    <h3>Get Paid</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import Track from "./pages/track/Track";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
-import Agents from './pages/agents/agents'
+import Profile from "./pages/profile/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { productInputs, userInputs, customerInputs, agentInputs } from "./formSource";
 import "./style/dark.scss";
@@ -24,10 +24,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="login" element={<Login />} />
-            <Route path="agents" element={<Agents />} />
             <Route path="signup" element={<Signup customerInputs={customerInputs} agentInputs={agentInputs} />} />
             <Route path="track" element={<Track />} />
-            
+            <Route path="profile" element={<Profile customerInputs={customerInputs} agentInputs={agentInputs}/>} />
+
             <Route path="users">
               <Route index element={<List />} />
               <Route path=":userId" element={<Single />} />

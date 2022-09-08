@@ -1,6 +1,7 @@
 import "./login.scss"
 import Navbar from "../../components/navbar/Navbar"
-import { useContext, useState } from "react"
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "../../config";
 import { UserContext } from "../../context/userContext";
 
@@ -8,6 +9,7 @@ const Login = () => {
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({});
   const { userdispatch } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -38,8 +40,8 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.id){
-          userdispatch({ type: "SET_USER", payload: { id:data.id, type:data.type}});
-          window.location.assign("/dashboard");
+          userdispatch({ type: "SET_USER", payload: { id:data.id, type:data.type, name:data.name } });
+          navigate("/dashboard");
         }   
       })
       .catch((err) => console.log(err))

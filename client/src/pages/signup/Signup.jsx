@@ -1,11 +1,13 @@
 import "./signup.scss";
 import Navbar from "../../components/navbar/Navbar";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {SERVER_URL} from "../../config";
 
 const Signup = ({ customerInputs, agentInputs}) => {
   const [role, setRole] = useState("customer");
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -35,7 +37,7 @@ const Signup = ({ customerInputs, agentInputs}) => {
       body: payload,
     };
     fetch(`${SERVER_URL}/${role}/register`, opts)
-    .then((res) => res.ok && window.location.assign("/login"))
+    .then((res) => res.ok && navigate("/login"))
     .catch((err) => console.log(err))
   }
 

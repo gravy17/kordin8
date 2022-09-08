@@ -1,16 +1,16 @@
+import { setCookie } from '../cookieControl'; 
+
 const UserReducer = (state, action) => {
   switch (action.type) {
-    case "SET_NAME": {
-      return {
-        ...state,
-        name: action.payload
-      };
-    }
     case "SET_USER": {
-      return {
+      const newState = {
         ...state,
-        ...action.payload
-      };
+        ...action.payload,
+      }
+      setCookie("user-type", newState.type, 7);
+      setCookie("user-id", newState.id, 7);
+      setCookie("user-name", newState.name, 7);
+      return newState
     }
     default:
       return state;
