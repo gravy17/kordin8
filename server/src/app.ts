@@ -23,18 +23,46 @@ db.sync()
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_APP_URL,
-    optionsSuccessStatus: 200
-  })
-);
-
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "..", "public")));
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_APP_URL,
+    methods: ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    exposedHeaders: [
+      "X-Powered-By",
+      "Access-Control-Allow-Origin",
+      "Vary",
+      "Access-Control-Allow-Credentials",
+      "Set-Cookie",
+      "Content-Type",
+      "Content-Length",
+      "ETag",
+      "Date",
+      "Connection",
+      "Keep-Alive"
+    ],
+    allowedHeaders: [
+      "Cookie",
+      "Cache-Control",
+      "Content-Type",
+      "Content-Length",
+      "Host",
+      "User-Agent",
+      "Accept",
+      "Accept-Encoding",
+      "X-Requested-With",
+      "Connection",
+      "Authorization"
+    ]
+  })
+);
 
 app.use("/", indexRouter);
 

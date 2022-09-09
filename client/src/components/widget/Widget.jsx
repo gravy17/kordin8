@@ -1,39 +1,20 @@
 import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
-const Widget = ({ type }) => {
+const Widget = ({ type, amount, diff }) => {
   let data;
 
-  //temporary
-  const amount = 100;
-  const diff = 20;
-
   switch (type) {
-    case "user":
+    case "orders":
       data = {
-        title: "USERS",
+        title: "ACTIVE ORDERS",
         isMoney: false,
-        link: "See all users",
-        icon: (
-          <PersonOutlinedIcon
-            className="icon"
-            style={{
-              color: "crimson",
-              backgroundColor: "rgba(255, 0, 0, 0.2)",
-            }}
-          />
-        ),
-      };
-      break;
-    case "order":
-      data = {
-        title: "ORDERS",
-        isMoney: false,
-        link: "View all orders",
+        link: "Active orders",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -45,11 +26,11 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "earning":
+    case "earnings":
       data = {
         title: "EARNINGS",
         isMoney: true,
-        link: "View net earnings",
+        link: "Net earnings",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -58,11 +39,11 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "balance":
+    case "costs":
       data = {
-        title: "BALANCE",
+        title: "COSTS",
         isMoney: true,
-        link: "See details",
+        link: "Paid this month",
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
@@ -74,6 +55,22 @@ const Widget = ({ type }) => {
         ),
       };
       break;
+      case "agents":
+        data = {
+          title: "AGENTS",
+          isMoney: false,
+          link: "Number of agents",
+          icon: (
+            <PersonOutlinedIcon
+            className="icon"
+            style={{
+              color: "crimson",
+              backgroundColor: "rgba(255, 0, 0, 0.2)",
+            }}
+            />
+          ),
+        };
+        break;
     default:
       break;
   }
@@ -83,13 +80,14 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && "₦"} {amount}
         </span>
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpIcon />
+        <div className={`percentage ${diff>0?"positive":"negative"}`}>
+          {diff>0 && <KeyboardArrowUpIcon />}
+          {diff<=0 && <KeyboardArrowDownIcon />}
           {diff} %
         </div>
         {data.icon}

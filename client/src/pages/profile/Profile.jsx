@@ -26,14 +26,10 @@ const Profile = ({ customerInputs, agentInputs }) => {
     const payload = JSON.stringify(formData);
     const opts = {
       method: "POST",
-      mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": SERVER_URL,
-        "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers":
-          "Origin, X-Requested-With, Content-Type, Accept",
       },
+      credentials: "include",
       body: payload,
     };
     fetch(`${SERVER_URL}/${role}/${id}`, opts)

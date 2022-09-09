@@ -4,7 +4,6 @@ import { OrderInstance } from "../models/order";
 import { orderValidator, orderUpdateValidator } from "../utils/order";
 import { validationOpts } from "../utils/utils";
 import { RequestInstance } from "../models/requests";
-import { TrackingInstance } from "../models/tracking";
 import { CustomerInstance } from "../models/customer";
 import { AgentInstance } from "../models/agent";
 import { Service } from "../utils/types/service";
@@ -12,14 +11,51 @@ import { Status } from "../utils/types/status";
 
 export async function getOrders(req: Request, res: Response) {
   try {
-    if (!req.admin) {
+    if (!req.admin && !req.agent && !req.customer) {
       return res.status(403).json({
         message: "Not permitted to access this resource"
       });
     }
-    const orders = await OrderInstance.findAll();
-    res.status(200).json(orders);
+    if (req.customer) {
+      const orders = await OrderInstance.findAll({
+        where: { placedBy: req.customer },
+        include: [
+          {
+            model: CustomerInstance,
+            as: "customer",
+            attributes: ["firstName", "email", "phone"]
+          },
+          {
+            model: AgentInstance,
+            as: "assignedAgent",
+            attributes: ["firstName", "email", "phone"]
+          }
+        ]
+      });
+      res.status(200).json(orders);
+    } else if (req.agent) {
+      const orders = await OrderInstance.findAll({
+        where: { agent: req.agent },
+        include: [
+          {
+            model: CustomerInstance,
+            as: "customer",
+            attributes: ["firstName", "email", "phone"]
+          },
+          {
+            model: AgentInstance,
+            as: "assignedAgent",
+            attributes: ["firstName", "email", "phone"]
+          }
+        ]
+      });
+      res.status(200).json(orders);
+    } else if (req.admin) {
+      const orders = await OrderInstance.findAll();
+      res.status(200).json(orders);
+    }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Unexpected error: unable to get orders" });
   }
 }
@@ -170,6 +206,28 @@ export async function updateOrder(req: Request, res: Response) {
       return res.status(403).json({
         message: "Not permitted to access this resource"
       });
+    }
+
+    if (req.body.status) {
+      if (req.customer) {
+        if (req.body.status !== "Complete") {
+          return res.status(403).json({
+            message: "You may only mark an order complete"
+          });
+        }
+      } else if (req.agent) {
+        if (req.body.status === "Complete" || req.body.status === "Canceled") {
+          return res.status(403).json({
+            message: "Only the customer may mark an order complete or canceled"
+          });
+        }
+      } else if (req.admin) {
+        if (req.body.status !== "Pending" || req.body.status !== "Rejected") {
+          return res.status(403).json({
+            message: "You may only reject or mark an order pending"
+          });
+        }
+      }
     }
 
     const updated = await order.update({

@@ -4,7 +4,11 @@
   .dashboardContainer {
     flex: 6;
     max-width: 100%;
-    
+
+    .widgets {
+      overflow: scroll;
+    }
+
     .widgets,
     .charts {
       display: flex;
