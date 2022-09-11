@@ -68,5 +68,41 @@
         margin-top: 10px;
       }
     }
+
+    .orderDetails {
+      .itemTitle {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #555;
+
+        .Accepted,
+        .Completed {
+          color: green;
+        }
+        .Pending,
+        .InProgress {
+          color: goldenrod;
+        }
+        .Rejected,
+        .Canceled {
+          color: red;
+        }
+      }
+
+      .detailItem {
+        margin-bottom: 10px;
+        font-size: 14px;
+
+        .itemKey {
+          font-weight: bold;
+          color: gray;
+          margin-right: 5px;
+        }
+
+        .itemValue {
+          font-weight: 300;
+        }
+      }
+    }
   }
 }

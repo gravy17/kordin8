@@ -8,9 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const List = ({ rows }) => {
   const { type } = useContext(UserContext);
+  const navigate = useNavigate();
   const opts = {
     headers: {
       "Content-Type": "application/json"
@@ -19,6 +21,7 @@ const List = ({ rows }) => {
   }
 
   const viewOrder = (id) => {
+    navigate(`/orders/${id}`);
   }
 
   const handleAccept = (id) => {
@@ -65,7 +68,7 @@ const List = ({ rows }) => {
               <TableCell className="tableCell">{row.customer.firstName}</TableCell>
               <TableCell className="tableCell">{row.assignedAgent?.firstName}</TableCell>
               <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{row.status}</span>
+                <span className={`status ${row.status.replace(' ','')}`}>{row.status}</span>
               </TableCell>
               <TableCell className="tableCell">
                 <button className="button" onClick={viewOrder.bind(null, row.id)}>View</button>

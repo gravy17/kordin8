@@ -101,13 +101,19 @@ const Dashboard = () => {
           {type==="agent" && <Widget type="earnings" amount={moneyAmt} diff={moneyDiff} />}
           {type==="customer" && <Widget type="costs" amount={moneyAmt} diff={moneyDiff} />}
         </div>
+        {type==="admin" && <div className="listContainer">
+        <a className="button gap" href="/admin/register">
+          Register an Admin
+        </a>
+        </div>}
         {orders && <div className="listContainer">
           <div className="listTitle">Orders</div>
+          {type==="customer" && <a className="button gap" href="/orders/new">Place Order</a>}
           <Table rows={orders} />
         </div>}
-        <div className="charts">
+        {type !== "admin" && <div className="charts">
           <Featured data={orders}/>
-        </div>
+        </div>}
       </div>
     </div>
   );

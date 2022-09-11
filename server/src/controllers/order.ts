@@ -51,7 +51,20 @@ export async function getOrders(req: Request, res: Response) {
       });
       res.status(200).json(orders);
     } else if (req.admin) {
-      const orders = await OrderInstance.findAll();
+      const orders = await OrderInstance.findAll({
+        include: [
+          {
+            model: CustomerInstance,
+            as: "customer",
+            attributes: ["firstName", "email", "phone"]
+          },
+          {
+            model: AgentInstance,
+            as: "assignedAgent",
+            attributes: ["firstName", "email", "phone"]
+          }
+        ]
+      });
       res.status(200).json(orders);
     }
   } catch (error) {
@@ -147,6 +160,7 @@ export async function placeOrder(req: Request, res: Response) {
     const order = await OrderInstance.create({
       id: uuidv4(),
       ...req.body,
+      placedBy: req.customer,
       status,
       agent: assignedAgent
     });

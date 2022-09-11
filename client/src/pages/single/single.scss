@@ -41,8 +41,22 @@
 
           .details {
             .itemTitle {
+              font-size: 20px;
               margin-bottom: 10px;
               color: #555;
+
+              .Accepted,
+              .Completed {
+                color: green;
+              }
+              .Pending,
+              .InProgress {
+                color: goldenrod;
+              }
+              .Rejected,
+              .Canceled {
+                color: red;
+              }
             }
 
             .detailItem {

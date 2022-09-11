@@ -1,7 +1,20 @@
 import Navbar from "../../components/navbar/Navbar";
 import "./home.scss";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const [trackingId, setTrackingId] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setTrackingId(value);
+  }
+  const goToTracking = () => {
+    navigate(`/track/${trackingId}`);
+  }
+  
   return (
     <div className="home">
       <div className="homeContainer">
@@ -13,8 +26,8 @@ const Home = () => {
                 <h1>Find Professionals. Get things done.</h1>
                 <p>Place orders with our verified agents and track their progress</p>
                 <div className="homeSearch">
-                  <input type="text" placeholder="TRACKING ID" />
-                  <button>Track</button>
+                  <input type="text" placeholder="TRACKING ID" onChange={handleChange}/>
+                  <button onClick={goToTracking}>Track</button>
                 </div>
               </div>
             </div>

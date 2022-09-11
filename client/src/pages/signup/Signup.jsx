@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {SERVER_URL} from "../../config";
 
-const Signup = ({ customerInputs, agentInputs}) => {
+const Signup = ({ customerInputs, agentInputs, adminInputs, admin}) => {
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -33,9 +33,52 @@ const Signup = ({ customerInputs, agentInputs}) => {
       credentials: "include",
       body: payload,
     };
-    fetch(`${SERVER_URL}/${role}/register`, opts)
-    .then((res) => res.ok && navigate("/login"))
-    .catch((err) => console.log(err))
+    if (!admin){
+      fetch(`${SERVER_URL}/${role}/register`, opts)
+      .then((res) => res.ok && navigate("/login"))
+      .catch((err) => console.log(err))
+    } else {
+      fetch(`${SERVER_URL}/admin/register`, opts)
+      .then((res) => res.ok && navigate("/admin"))
+      .catch((err) => console.log(err))
+    }
+  }
+
+  if (admin){
+    return (
+      <div className="signup">
+      <div className="signupContainer">
+        <Navbar />
+        <div className="top">
+          <h1>Signup</h1>
+        </div>
+        <div className="bottom">
+          <form className="form">
+            <>
+              {adminInputs.map((input) => 
+                input.type === "select" ? (
+                  <div className="formInput" key={input.name}>
+                    <label>{input.label}</label>
+                    <select name={input.name} required onChange={handleInput}>
+                      {input.options.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                ):(
+                <div className="formInput" key={input.id}>
+                  <label>{input.label}</label>
+                  <input name={input.name} type={input.type} placeholder={input.placeholder} onChange={handleInput}/>
+                </div>
+                )
+              )}
+            </> 
+            <button onClick={handleSubmit}>Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    )
   }
 
   return (
@@ -47,13 +90,13 @@ const Signup = ({ customerInputs, agentInputs}) => {
         </div>
         <div className="bottom">
           <form className="form">
-            <div className="formInput">
+            {!admin && <div className="formInput">
               <label>Sign up as: </label>
               <select name="role" onInput={handleChange} defaultValue="customer">
                 <option value="customer">Customer</option>
                 <option value="agent">Agent</option>
               </select>
-            </div>
+            </div>}
             {role === "customer" ? (
               <>
                 {customerInputs.map((input) => (

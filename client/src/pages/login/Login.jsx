@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "../../config";
 import { UserContext } from "../../context/userContext";
 
-const Login = () => {
+const Login = ({admin}) => {
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({});
   const { userdispatch } = useContext(UserContext);
@@ -33,7 +33,18 @@ const Login = () => {
       credentials: "include",
       body: payload,
     };
-    fetch(`${SERVER_URL}/${role}/login`, opts)
+    if (!admin){
+      fetch(`${SERVER_URL}/${role}/login`, opts)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.id){
+            userdispatch({ type: "SET_USER", payload: { id:data.id, type:data.type, name:data.name } });
+            navigate("/dashboard");
+          }   
+        })
+        .catch((err) => console.log(err))
+    } else {
+      fetch(`${SERVER_URL}/admin/login`, opts)
       .then((res) => res.json())
       .then((data) => {
         if (data.id){
@@ -42,6 +53,7 @@ const Login = () => {
         }   
       })
       .catch((err) => console.log(err))
+    }
   }
 
   return (
@@ -53,13 +65,13 @@ const Login = () => {
         </div>
         <div className="bottom">
           <form className="form">
-            <div className="formInput">
+            {!admin && <div className="formInput">
               <label>Login as: </label>
               <select name="role" onInput={handleChange} defaultValue="customer">
                 <option value="customer">Customer</option>
                 <option value="agent">Agent</option>
               </select>
-            </div>
+            </div>}
             <div className="formInput">
               <label>Email</label>
               <input name="email" type="email" placeholder="johndoe@example.com" onChange={handleInput}/>

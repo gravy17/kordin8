@@ -17,14 +17,14 @@ export const adminInputs = [
     id: 3,
     name: "email",
     label: "Email Address",
-    type: "text",
+    type: "email",
     placeholder: "johndoe@example.com",
   },
   {
     id: 4,
     name: "phone",
     label: "Phone Number",
-    type: "text",
+    type: "tel",
     placeholder: "08011234567",
   },
   {
@@ -76,14 +76,14 @@ export const agentInputs = [
     id: 4,
     name: "email",
     label: "Email Address",
-    type: "text",
+    type: "email",
     placeholder: "johndoe@example.com",
   },
   {
     id: 5,
     name: "phone",
     label: "Phone Number",
-    type: "text",
+    type: "tel",
     placeholder: "08011234567",
   },
   {
@@ -165,14 +165,14 @@ export const customerInputs = [
     id: 4,
     name: "email",
     label: "Email Address",
-    type: "text",
+    type: "email",
     placeholder: "johndoe@example.com",
   },
   {
     id: 5,
     name: "phone",
     label: "Phone Number",
-    type: "text",
+    type: "tel",
     placeholder: "08011234567",
   },
   {
@@ -190,81 +190,43 @@ export const customerInputs = [
     placeholder: "123Secret",
   },
 ]
-
-export const userInputs = [
-    {
-      id: 1,
-      label: "Username",
-      type: "text",
-      placeholder: "john_doe",
-    },
-    {
-      id: 2,
-      label: "Name and surname",
-      type: "text",
-      placeholder: "John Doe",
-    },
-    {
-      id: 3,
-      label: "Email",
-      type: "mail",
-      placeholder: "john_doe@gmail.com",
-    },
-    {
-      id: 4,
-      label: "Phone",
-      type: "text",
-      placeholder: "+1 234 567 89",
-    },
-    {
-      id: 5,
-      label: "Password",
-      type: "password",
-    },
-    {
-      id: 6,
-      label: "Address",
-      type: "text",
-      placeholder: "Elton St. 216 NewYork",
-    },
-    {
-      id: 7,
-      label: "Country",
-      type: "text",
-      placeholder: "USA",
-    },
-  ];
   
-  export const productInputs = [
-    {
-      id: 1,
-      label: "Title",
-      type: "text",
-      placeholder: "Apple Macbook Pro",
-    },
-    {
-      id: 2,
-      label: "Description",
-      type: "text",
-      placeholder: "Description",
-    },
-    {
-      id: 3,
-      label: "Category",
-      type: "text",
-      placeholder: "Computers",
-    },
-    {
-      id: 4,
-      label: "Price",
-      type: "text",
-      placeholder: "100",
-    },
-    {
-      id: 5,
-      label: "Stock",
-      type: "text",
-      placeholder: "in stock",
-    },
-  ];
-  
+export const orderInputs = [
+  {
+    id: 1,
+    name: "orderType",
+    label: "Order Type",
+    type: "select",
+    options: [
+      { value:"Catering", label:"Catering" },
+      { value:"Delivery", label:"Delivery" },
+      { value:"Pickup", label:"Pickup" },
+      { value:"Repairs", label:"Repairs" },
+      { value:"Crafts", label:"Crafts" },
+      { value:"Events", label:"Events" },
+      { value:"Security", label:"Security" },
+      { value:"Products", label:"Products" },
+    ]
+  },
+  {
+    id: 2,
+    name: "recipient",
+    label: "Recipient details",
+    type: "text",
+    placeholder: "Name, Address, Phone No."
+  },
+  {
+    id: 3,
+    name: "description",
+    label: "Description",
+    type: "text",
+    placeholder: "Any additional info / special instructions",
+  },
+  {
+    id: 4,
+    name: "price",
+    label: "Price",
+    type: "number",
+    placeholder: "Suggest a price that an agent will likely agree on"
+  }
+]
