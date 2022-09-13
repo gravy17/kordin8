@@ -20,7 +20,7 @@ export async function getCustomerInfo(req: Request, res: Response) {
     const record = await CustomerInstance.findOne({
       where: { id },
       attributes: {
-        exclude: ["email", "phone", "password"]
+        exclude: ["password"]
       },
       include: [
         {

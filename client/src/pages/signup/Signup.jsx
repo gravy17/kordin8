@@ -59,7 +59,7 @@ const Signup = ({ customerInputs, agentInputs, adminInputs, admin}) => {
                 input.type === "select" ? (
                   <div className="formInput" key={input.name}>
                     <label>{input.label}</label>
-                    <select name={input.name} required onChange={handleInput}>
+                    <select name={input.name} required onInput={handleInput}>
                       {input.options.map((option) => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                       ))}

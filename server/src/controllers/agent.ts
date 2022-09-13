@@ -14,7 +14,9 @@ export async function getAgents(req: Request, res: Response) {
         message: "Not permitted to access this resource"
       });
     }
-    const agents = await AgentInstance.findAll();
+    const agents = await AgentInstance.findAll({
+      attributes: ["id", "firstName", "lastName", "email", "phone", "service"]
+    });
     res.status(200).json(agents);
   } catch (error) {
     res.status(500).json(error);
@@ -33,15 +35,7 @@ export async function getAgentInfo(req: Request, res: Response) {
     const record = await AgentInstance.findOne({
       where: { id },
       attributes: {
-        exclude: [
-          "email",
-          "phone",
-          "dob",
-          "address",
-          "password",
-          "bvn",
-          "govtIdRef"
-        ]
+        exclude: ["password", "bvn", "govtIdRef"]
       },
       include: [
         {

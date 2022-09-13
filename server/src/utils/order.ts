@@ -6,7 +6,6 @@ export const orderValidator = Joi.object().keys({
   orderType: Joi.string()
     .valid(...validServices)
     .required(),
-  placedBy: Joi.string().required(),
   recipient: Joi.string(),
   description: Joi.string(),
   price: Joi.number().required()
@@ -14,7 +13,6 @@ export const orderValidator = Joi.object().keys({
 
 export const orderUpdateValidator = Joi.object().keys({
   orderType: Joi.string().valid(...validServices),
-  placedBy: Joi.string(),
   recipient: Joi.string(),
   description: Joi.string(),
   price: Joi.number(),

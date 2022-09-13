@@ -1,17 +1,50 @@
 import "./profile.scss";
 import Navbar from "../../components/navbar/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "../../config";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
+import Sidebar from "../../components/sidebar/Sidebar";
 
 const Profile = ({ customerInputs, agentInputs }) => {
   const [formData, setFormData] = useState({});
   const [updating, setUpdating] = useState(false);
+  const [customer, setCustomer] = useState({});
+  const [agent, setAgent] = useState({});
   const navigate = useNavigate();
   const { id, type, userdispatch } = useContext(UserContext);
   const role = type;
+
+  useEffect(() => {
+    if (type === "customer") {
+      fetch(`${SERVER_URL}/${role}/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      .then((res) => res.ok && res.json())
+      .then((data) => {
+        setCustomer(data.record);
+      })
+      .catch((err) => console.log(err));
+    } else if (type === "agent") {
+      fetch(`${SERVER_URL}/${role}/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      })
+      .then((res) => res.ok && res.json())
+      .then((data) => {
+        setAgent(data.record);
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [])
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -23,9 +56,14 @@ const Profile = ({ customerInputs, agentInputs }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === "") {
+        delete formData[key];
+      }
+    });
     const payload = JSON.stringify(formData);
     const opts = {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,7 +78,7 @@ const Profile = ({ customerInputs, agentInputs }) => {
             type: "SET_USER",
             payload: { name: data.updated.firstName },
           });
-          navigate("/profile");
+          navigate("/dashboard");
         }
       })
       .catch((err) => console.log(err));
@@ -48,6 +86,7 @@ const Profile = ({ customerInputs, agentInputs }) => {
 
   return (
     <div className="profile">
+      <Sidebar />
       <div className="profileContainer">
         <Navbar />
         <div className="top">
@@ -64,7 +103,8 @@ const Profile = ({ customerInputs, agentInputs }) => {
                       name={input.name}
                       type={input.type}
                       placeholder={input.placeholder}
-                      onChange={handleInput}
+                      defaultValue={customer[input.name]}
+                      onInput={handleInput}
                       disabled={!updating}
                     />
                   </div>
@@ -79,8 +119,9 @@ const Profile = ({ customerInputs, agentInputs }) => {
                       <select
                         name={input.name}
                         required
-                        onChange={handleInput}
+                        onInput={handleInput}
                         disabled={!updating}
+                        defaultValue={{value: agent[input.name], label: agent[input.name]}}
                       >
                         {input.options.map((option) => (
                           <option key={option.value} value={option.value}>
@@ -96,7 +137,8 @@ const Profile = ({ customerInputs, agentInputs }) => {
                         name={input.name}
                         type={input.type}
                         placeholder={input.placeholder}
-                        onChange={handleInput}
+                        defaultValue={agent[input.name] || ''}
+                        onInput={handleInput}
                         disabled={!updating}
                       />
                     </div>

@@ -30,7 +30,8 @@ export async function getOrders(req: Request, res: Response) {
             as: "assignedAgent",
             attributes: ["firstName", "email", "phone"]
           }
-        ]
+        ],
+        order: [["updatedAt", "DESC"]]
       });
       res.status(200).json(orders);
     } else if (req.agent) {
@@ -47,7 +48,8 @@ export async function getOrders(req: Request, res: Response) {
             as: "assignedAgent",
             attributes: ["firstName", "email", "phone"]
           }
-        ]
+        ],
+        order: [["updatedAt", "DESC"]]
       });
       res.status(200).json(orders);
     } else if (req.admin) {
@@ -63,7 +65,8 @@ export async function getOrders(req: Request, res: Response) {
             as: "assignedAgent",
             attributes: ["firstName", "email", "phone"]
           }
-        ]
+        ],
+        order: [["updatedAt", "DESC"]]
       });
       res.status(200).json(orders);
     }
@@ -150,6 +153,7 @@ export async function placeOrder(req: Request, res: Response) {
 
     const { error } = orderValidator.validate(req.body, validationOpts);
     if (error) {
+      console.log(error);
       return res.status(400).json({
         message: error.details[0].message
       });
@@ -187,7 +191,8 @@ export async function reassignOrder(req: Request, res: Response) {
       });
     }
 
-    const assignedAgent = await assignAgent(order.getDataValue("orderType"));
+    const assignedAgent =
+      (await assignAgent(order.getDataValue("orderType"))) || null;
     const result = await order.update({ agent: assignedAgent });
 
     return res.status(200).json({
@@ -224,19 +229,28 @@ export async function updateOrder(req: Request, res: Response) {
 
     if (req.body.status) {
       if (req.customer) {
-        if (req.body.status !== "Complete") {
+        if (req.body.status !== "Completed") {
           return res.status(403).json({
             message: "You may only mark an order complete"
           });
         }
       } else if (req.agent) {
-        if (req.body.status === "Complete" || req.body.status === "Canceled") {
+        if (
+          Object.keys(req.body).length > 1 ||
+          !req.body.status ||
+          req.body.status === "Completed" ||
+          req.body.status === "Cancelled"
+        ) {
           return res.status(403).json({
-            message: "Only the customer may mark an order complete or canceled"
+            message: "Only the customer may mark an order Complete or Cancelled"
           });
         }
       } else if (req.admin) {
-        if (req.body.status !== "Pending" || req.body.status !== "Rejected") {
+        if (
+          Object.keys(req.body).length > 1 ||
+          !req.body.status ||
+          (req.body.status !== "Pending" && req.body.status !== "Rejected")
+        ) {
           return res.status(403).json({
             message: "You may only reject or mark an order pending"
           });
@@ -278,13 +292,13 @@ export async function requestCancellation(req: Request, res: Response) {
     }
 
     if (String(record.getDataValue("status")) === "Pending") {
-      const canceled = await record.update({
+      const Cancelled = await record.update({
         status: "Cancelled",
         agent: undefined
       });
       return res.status(200).json({
         message: "Order cancelled",
-        canceled
+        Cancelled
       });
     } else {
       const request = await RequestInstance.create({

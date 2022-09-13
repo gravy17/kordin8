@@ -12,7 +12,7 @@ export interface OrderAttributes {
   description?: string;
   price: number;
   status: Status;
-  agent?: string;
+  agent?: string | null;
 }
 
 export class OrderInstance extends Model<OrderAttributes> {}

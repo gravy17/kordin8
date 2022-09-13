@@ -36,7 +36,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    setOrdersAmt(orders.filter((order) => !["Pending","Rejected","Canceled"].includes(order.status)).length);
+    setOrdersAmt(orders.filter((order) => !["Pending","Rejected","Cancelled"].includes(order.status)).length);
     if(type === "admin") {
       fetch(`${SERVER_URL}/agent/get-all`, {
         method: "GET",
@@ -70,7 +70,7 @@ const Dashboard = () => {
     } else if(type === "customer") {
       let spendingAmt = 0, spendingDiff = 0;
       orders.map((order) => {
-        if (!["Pending","Rejected","Canceled"].includes(order.status)) {
+        if (!["Pending","Rejected","Cancelled"].includes(order.status)) {
           spendingAmt += order.price;
           const spendingDate = new Date(order.updatedAt);
           const today = new Date();
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if(ordersAmt > 0)
-    setOrdersDiff(orders.filter((order) => !["Pending","Rejected","Canceled"].includes(order.status) && new Date(order.updatedAt).getMonth() === new Date().getMonth()).length/ordersAmt*100);
+    setOrdersDiff(orders.filter((order) => !["Pending","Rejected","Cancelled"].includes(order.status) && new Date(order.updatedAt).getMonth() === new Date().getMonth()).length/ordersAmt*100);
     else setOrdersDiff(0);
   }, [ordersAmt])
 

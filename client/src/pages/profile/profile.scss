@@ -3,6 +3,7 @@
 
   .profileContainer {
     flex: 6;
+    max-width: 100%;
   }
 
   .top,
@@ -66,6 +67,15 @@
         cursor: pointer;
         margin-top: 10px;
       }
+    }
+  }
+
+  .sidebar {
+    .top {
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      --webkit-box-shadow: none;
     }
   }
 }

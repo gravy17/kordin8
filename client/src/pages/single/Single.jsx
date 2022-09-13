@@ -9,6 +9,9 @@ import { UserContext } from "../../context/userContext";
 const Single = () => {
   const { id } = useParams();
   const [order, setOrder] = useState({});
+  const [tracker, setTracker] = useState({});
+  const [copied, setCopied] = useState(false);
+  const [tracking, setTracking] = useState("");
   const {type} = useContext(UserContext)
 
   useEffect(() => {
@@ -24,6 +27,36 @@ const Single = () => {
       });
   }, [])
 
+  const getTracking = (e) => {
+    e.preventDefault();
+    fetch(`${SERVER_URL}/track/order/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(tracker),
+      credentials: "include",
+    }).then((res) => res.ok && res.json())
+      .then((data) => {
+        setTracking(data.id);
+      });
+  }
+
+  const handleInput = (e) => {
+    const trackerInfo = {
+      ...tracker,
+      [e.target.name]: e.target.value
+    }
+    setTracker(trackerInfo);
+  }
+  const copyToClipboard = (e) => {
+    navigator.clipboard.writeText(tracking);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000)
+  }
+
   return (
     <div className="single">
       <Sidebar />
@@ -34,7 +67,7 @@ const Single = () => {
             <h1 className="title">Order Information</h1>
             <div className="item">
               <div className="details">
-                <h1 className="itemTitle">{order.orderType}: <span className={order.status?.replace(' ','')}>{order.status}</span></h1>
+                <h2 className="itemTitle">{order.orderType}: <span className={order.status?.replace(' ','')}>{order.status}</span></h2>
                 <div className="detailItem">
                   <span className="itemKey">Order ID:</span>
                   <span className="itemValue">{order.id}</span>
@@ -57,7 +90,7 @@ const Single = () => {
             </div>
             <div className="item">
               <div className="details">
-                <h1 className="itemTitle">Customer: {order.customer.firstName} {order.customer.lastName}</h1>
+                <h2 className="itemTitle">Customer: {order.customer.firstName} {order.customer.lastName}</h2>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
                   <span className="itemValue">{order.customer.email}</span>
@@ -71,7 +104,7 @@ const Single = () => {
             {order.assignedAgent && 
               <div className="item">
                 <div className="details">
-                  <h1 className="itemTitle">Agent: {order.assignedAgent.firstName} {order.assignedAgent.lastName}</h1>
+                  <h2 className="itemTitle">Agent: {order.assignedAgent.firstName} {order.assignedAgent.lastName}</h2>
                   <div className="detailItem">
                     <span className="itemKey">Email:</span>
                     <span className="itemValue">{order.assignedAgent.email}</span>
@@ -81,6 +114,33 @@ const Single = () => {
                     <span className="itemValue">{order.assignedAgent.phone}</span>
                   </div>
                 </div>
+              </div>
+            }
+            {type === "customer" && 
+              <div className="tracking">
+                <h2 className="title">Tracking</h2>
+                <div className="details">
+                  <div className="formInput">
+                    <label>Name</label>
+                    <input name="name" type="text" placeholder="Name of contact" onChange={handleInput}/>
+                  </div>
+                  <div className="formInput">
+                    <label>Email</label>
+                    <input name="email" type="text" placeholder="Email to send updates to" onChange={handleInput}/>
+                  </div>
+                  <div className="formInput">
+                    <label>Phone</label>
+                    <input name="phone" type="text" placeholder="Phone to send text updates" onChange={handleInput}/>
+                  </div>
+                </div>
+                <button className="button" onClick={getTracking}>Share Tracking</button>
+                {!!tracking.length && <div className="details">
+                    <div className="formInput" onClick={copyToClipboard}>
+                      <label>New tracking id {copied?"copied!":"(click to copy to clipboard)"}:</label>
+                      <input value={tracking} disabled/>
+                    </div>
+                  </div>
+                }
               </div>
             }
           </div>

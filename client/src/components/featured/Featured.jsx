@@ -50,7 +50,8 @@ const Featured = ({data}) => {
   useEffect(() => {
     const complete = data.filter(item => item.status === "Completed").length;
     const total = data.length;
-    setPercentage(complete/total*100);
+    let res = complete/total*100;
+    setPercentage(res.toFixed(1));
   }, [data])
   return (
     <div className="featured">
@@ -69,8 +70,9 @@ const Featured = ({data}) => {
             return orderDate.getMonth() === today.getMonth() && orderDate.getFullYear() === today.getFullYear()
           }).reduce((prev, curr) => prev + curr.price, 0)
         }</p>
+        <p className="title nomargin">Projected monthly {type==="customer"?"expenditure":"revenue"}</p>
         <p className="desc">
-          Projected {type==="customer"?"expenditure":"revenue"} this month
+          Completed orders
         </p>
         <div className="summary">
           <div className="item">
@@ -78,7 +80,7 @@ const Featured = ({data}) => {
             <div className={`itemResult ${goodweek?"positive":"negative"}`}>
               {!goodweek && <KeyboardArrowDownIcon fontSize="small"/>}
               {goodweek && <KeyboardArrowUpOutlinedIcon fontSize="small"/>}
-              <div className="resultAmount">{weekly}</div>
+              <div className="resultAmount">₦{weekly}</div>
             </div>
           </div>
           <div className="item">
@@ -86,7 +88,7 @@ const Featured = ({data}) => {
             <div className={`itemResult ${goodmonth?"positive":"negative"}`}>
             {!goodmonth && <KeyboardArrowDownIcon fontSize="small"/>}
               {goodmonth && <KeyboardArrowUpOutlinedIcon fontSize="small"/>}
-              <div className="resultAmount">{monthly}</div>
+              <div className="resultAmount">₦{monthly}</div>
             </div>
           </div>
           <div className="item">
@@ -94,7 +96,7 @@ const Featured = ({data}) => {
             <div className={`itemResult ${goodyear?"positive":"negative"}`}>
             {!goodyear && <KeyboardArrowDownIcon fontSize="small"/>}
               {goodyear && <KeyboardArrowUpOutlinedIcon fontSize="small"/>}
-              <div className="resultAmount">{yearly}</div>
+              <div className="resultAmount">₦{yearly}</div>
             </div>
           </div>
         </div>

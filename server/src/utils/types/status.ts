@@ -8,7 +8,7 @@ export type Status =
 
 export const validStatuses = [
   "Pending",
-  "Canceled",
+  "Cancelled",
   "Rejected",
   "Accepted",
   "In Progress",

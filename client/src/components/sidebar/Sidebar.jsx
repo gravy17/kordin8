@@ -31,29 +31,33 @@ const Sidebar = () => {
         <ul>
           <p className="title">MAIN</p>
           <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+            <Link to="/dashboard" style={{ textDecoration: "none" }}>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
+            </Link>
           </li>
           <p className="title">LISTS</p>
-          {type === "admin" && <Link to="/agents" style={{ textDecoration: "none" }}>
+          {type === "admin" && 
             <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Agents</span>
+              <Link to="/agents" style={{ textDecoration: "none" }}>
+                <PersonOutlineIcon className="icon" />
+                <span>Agents</span>
+              </Link>
             </li>
-          </Link>}
-          <Link to="/orders" style={{ textDecoration: "none" }}>
+          }
           <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
+            <Link to="/orders" style={{ textDecoration: "none" }}>
+              <CreditCardIcon className="icon" />
+              <span>Orders</span>
+            </Link>
           </li>
-          </Link>
           <p className="title">USER</p>
-          <li>
+          {type !== "admin" && <li>
             <Link to="/profile" style={{ textDecoration: "none" }}>
               <AccountCircleOutlinedIcon className="icon" />
               <span>Profile</span>
             </Link>
-          </li>
+          </li>}
           <li onClick={handleLogout}>
             <Link to="#" style={{ textDecoration: "none" }}>
               <ExitToAppIcon className="icon"/>
