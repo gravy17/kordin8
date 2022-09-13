@@ -110,6 +110,7 @@ export async function getOrderInfo(req: Request, res: Response) {
     }
     res.status(200).json(order);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: unable to get order info",
       id: req.params.id
@@ -200,6 +201,7 @@ export async function reassignOrder(req: Request, res: Response) {
       newAgent: result.getDataValue("agent")
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: while trying to reassign order",
       id: req.params.id
@@ -267,6 +269,7 @@ export async function updateOrder(req: Request, res: Response) {
       updated
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: while trying to update order",
       id: req.params.id
@@ -344,6 +347,7 @@ export async function deleteOrder(req: Request, res: Response) {
       id
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: while deleting order",
       id: req.params.id

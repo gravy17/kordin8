@@ -19,6 +19,7 @@ export async function getAgents(req: Request, res: Response) {
     });
     res.status(200).json(agents);
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 }
@@ -55,6 +56,7 @@ export async function getAgentInfo(req: Request, res: Response) {
       record
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to get agent info",
       id: req.params.id
@@ -113,6 +115,7 @@ export async function loginAgent(req: Request, res: Response) {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error: Failed to authenticate agent"
     });
@@ -128,6 +131,7 @@ export async function logoutAgent(req: Request, res: Response) {
       .status(200)
       .json({ message: "Agent successfully logged out" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error while logging out agent"
     });
@@ -171,6 +175,7 @@ export async function updateAgent(req: Request, res: Response) {
       updated
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to update agent",
       id: req.params.id
@@ -212,6 +217,7 @@ export async function registerAgent(req: Request, res: Response) {
       throw new Error();
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Failed to register agent"
     });
@@ -244,6 +250,7 @@ export async function deleteAgent(req: Request, res: Response) {
       throw new Error();
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to delete agent"
     });
@@ -282,6 +289,7 @@ export async function requestDeletion(req: Request, res: Response) {
       throw new Error();
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to request agent deletion"
     });

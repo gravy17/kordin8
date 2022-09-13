@@ -47,6 +47,7 @@ export async function getCustomerInfo(req: Request, res: Response) {
       record
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to get customer info",
       id: req.params.id
@@ -105,6 +106,7 @@ export async function loginCustomer(req: Request, res: Response) {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error: Failed to authenticate customer"
     });
@@ -120,6 +122,7 @@ export async function logoutCustomer(req: Request, res: Response) {
       .status(200)
       .json({ message: "Customer successfully logged out" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error while logging out customer"
     });
@@ -164,6 +167,7 @@ export async function updateCustomer(req: Request, res: Response) {
       updated
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to update customer",
       id: req.params.id
@@ -243,6 +247,7 @@ export async function deleteCustomer(req: Request, res: Response) {
       throw new Error();
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to delete customer"
     });
@@ -281,6 +286,7 @@ export async function requestDeletion(req: Request, res: Response) {
       throw new Error();
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to request customer deletion"
     });

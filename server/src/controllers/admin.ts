@@ -26,6 +26,7 @@ export async function getAdminInfo(req: Request, res: Response) {
       record
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to get admin info",
       id: req.params.id
@@ -84,6 +85,7 @@ export async function loginAdmin(req: Request, res: Response) {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error: Failed to authenticate admin"
     });
@@ -99,6 +101,7 @@ export async function logoutAdmin(req: Request, res: Response) {
       .status(200)
       .json({ message: "Admin successfully logged out" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Unexpected error while logging out admin"
     });
@@ -142,6 +145,7 @@ export async function updateAdmin(req: Request, res: Response) {
       updated
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Unexpected error: Failed to update movie",
       id: req.params.id
@@ -188,6 +192,7 @@ export async function registerAdmin(req: Request, res: Response) {
       throw new Error();
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Failed to register admin"
     });
