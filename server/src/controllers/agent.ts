@@ -91,11 +91,15 @@ export async function loginAgent(req: Request, res: Response) {
         .status(200)
         .cookie("token", token, {
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          httpOnly: true
+          httpOnly: true,
+          secure: true,
+          sameSite: "none"
         })
         .cookie("usertype", "agent", {
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          httpOnly: true
+          httpOnly: true,
+          secure: true,
+          sameSite: "none"
         })
         .json({
           id: user.getDataValue("id"),

@@ -62,11 +62,15 @@ export async function loginAdmin(req: Request, res: Response) {
         .status(200)
         .cookie("token", token, {
           maxAge: 30 * 60 * 1000,
-          httpOnly: true
+          httpOnly: true,
+          secure: true,
+          sameSite: "none"
         })
         .cookie("usertype", "admin", {
           maxAge: 30 * 60 * 1000,
-          httpOnly: true
+          httpOnly: true,
+          secure: true,
+          sameSite: "none"
         })
         .json({
           id: user.getDataValue("id"),
