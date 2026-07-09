@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "servedb": "docker compose up",
@@ -23,7 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
-    "pg": "^8.8.0",
+    "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.21.4",
     "sequelize-cli": "^6.4.1",
