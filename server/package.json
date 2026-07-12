@@ -5,11 +5,12 @@
   "scripts": {
     "servedb": "docker compose up",
     "start": "node ./bin/www",
-    "compile": "tsc -w",
     "build": "tsc && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "dev": "ts-node-dev --respawn ./bin/www",
+    "dev": "tsc -w & ts-node-dev --respawn ./bin/www",
     "lint": "eslint ./src/**/*.ts --fix",
-    "test": "jest"
+    "test": "jest",
+    "unseed": "npx sequelize-cli db:seed:undo:all",
+    "demigrate": "npx sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
