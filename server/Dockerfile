@@ -1,24 +1,29 @@
-FROM node:18-alpine
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+FROM node:18-alpine AS runtime
+
+WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=80
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-
-WORKDIR /home/node/app
-
 COPY package*.json ./
-
-USER node
-
 RUN npm ci --omit=dev
 
-COPY --chown=node:node . .
-
-RUN pwd && ls -la && find .
-
-RUN npm run build
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/bin ./bin
+COPY --from=build /app/config ./config
+COPY --from=build /app/public ./public
 
 EXPOSE 80
 
-CMD ["sh", "-c", "npm run start"]
+ENTRYPOINT ["node", "./bin/www"]
