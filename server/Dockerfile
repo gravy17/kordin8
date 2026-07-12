@@ -15,8 +15,10 @@ RUN npm ci --omit=dev
 
 COPY --chown=node:node . .
 
+RUN pwd && ls -la && find .
+
 RUN npm run build
 
 EXPOSE 80
 
-ENTRYPOINT ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run start"]
