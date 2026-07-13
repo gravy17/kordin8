@@ -5,7 +5,9 @@
   "scripts": {
     "servedb": "docker compose up",
     "start": "node ./bin/www",
-    "build": "tsc && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "build": "tsc",
+    "seed": "npx sequelize-cli db:seed:all",
+    "migrate": "npx sequelize-cli db:migrate",
     "dev": "tsc -w & ts-node-dev --respawn ./bin/www",
     "lint": "eslint ./src/**/*.ts --fix",
     "test": "jest",
