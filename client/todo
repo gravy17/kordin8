@@ -1,0 +1,10 @@
+  Line 58:26:  Array.prototype.map() expects a return value from arrow function                                                                                                                                                                    array-callback-return
+  Line 72:26:  Array.prototype.map() expects a return value from arrow function                                                                                                                                                                    array-callback-return
+  Line 85:6:   React Hook useEffect has a missing dependency: 'type'. Either include it or remove the dependency array                                                                                                                             react-hooks/exhaustive-deps
+  Line 91:6:   React Hook useEffect has a missing dependency: 'orders'. Either include it or remove the dependency array. You can also replace multiple useState variables with useReducer if 'setOrdersDiff' needs the current value of 'orders'  react-hooks/exhaustive-deps
+src/pages/profile/Profile.jsx
+  Line 47:6:  React Hook useEffect has missing dependencies: 'id', 'role', and 'type'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+src/pages/single/Single.jsx
+  Line 28:6:  React Hook useEffect has a missing dependency: 'id'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+src/pages/track/Track.jsx
+  Line 37:6:  React Hook useEffect has a missing dependency: 'id'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
